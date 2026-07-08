@@ -63,7 +63,11 @@
 
   /* ---------- Header, mobile nav, reveal ---------- */
   const header = $('#header');
-  addEventListener('scroll', () => header && header.classList.toggle('scrolled', scrollY > 12), { passive: true });
+  const scrollProg = $('#scrollProg');
+  addEventListener('scroll', () => {
+    if (header) header.classList.toggle('scrolled', scrollY > 12);
+    if (scrollProg) { const m = document.documentElement.scrollHeight - innerHeight; scrollProg.style.setProperty('--sp', m > 0 ? (scrollY / m).toFixed(4) : '0'); }
+  }, { passive: true });
 
   const toggle = $('#navToggle');
   if (toggle) toggle.addEventListener('click', () => {
@@ -78,6 +82,29 @@
     : null;
   $$('.reveal:not(.in)').forEach(el => io ? io.observe(el) : el.classList.add('in'));
   requestAnimationFrame(() => document.body.classList.add('loaded'));
+
+  /* ---------- Service swipe decks: swipe (native), tap cover, or dots ---------- */
+  $$('.svc').forEach(card => {
+    const deck = $('.svc-deck', card);
+    if (!deck) return;
+    const dots = $$('.svc-dots button', card);
+    const goTo = i => deck.scrollTo({ left: i * deck.clientWidth, behavior: 'smooth' });
+    let t;
+    deck.addEventListener('scroll', () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const i = Math.round(deck.scrollLeft / deck.clientWidth);
+        dots.forEach((d, k) => d.classList.toggle('is-on', k === i));
+      }, 60);
+    }, { passive: true });
+    dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+    const cover = $('.svc-cover', card); if (cover) cover.addEventListener('click', () => goTo(1));
+    const back = $('.svc-back', card); if (back) back.addEventListener('click', e => { e.stopPropagation(); goTo(0); });
+    deck.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(0); }
+    });
+  });
 
   /* ---------- Showcase: scroll-driven pinned pillars ---------- */
   const showcase = $('.showcase');

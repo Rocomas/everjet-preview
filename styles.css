@@ -162,20 +162,60 @@ section[id]{scroll-margin-top:88px}
 .head .lead{margin-top:1.1rem}
 .head.center .lead{margin-inline:auto}
 
-/* ---------- Services ---------- */
+/* ---------- Services (image-forward swipe decks) ---------- */
 .services{background:var(--paper-soft)}
-.services-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:3rem}
-.svc{position:relative;border:1px solid var(--line);border-radius:var(--r-lg);padding:2rem 2rem 1.8rem;background:var(--white);overflow:hidden;transition:.3s var(--ease)}
-.svc.lead-svc{grid-column:1/-1;background:linear-gradient(135deg,var(--navy),var(--navy-2));color:var(--paper);border-color:transparent}
-.svc:hover{border-color:rgba(169,134,63,.45);box-shadow:var(--shadow),0 0 0 1px rgba(198,162,78,.22);transform:translateY(-4px)}
-.svc::before{content:attr(data-n);position:absolute;top:1.2rem;right:1.6rem;font:400 3.4rem/1 var(--serif);color:var(--sand);z-index:0}
-.svc.lead-svc::before{color:rgba(198,162,78,.22)}
-.svc>*{position:relative}
-.svc h3{font:500 var(--fs-h3)/1.15 var(--serif);margin:0 0 .6rem}
-.svc p{color:var(--ink-soft);font-size:.95rem;margin:0 0 1.1rem;max-width:52ch}
-.svc.lead-svc p{color:rgba(247,243,234,.8)}
-.svc .link-gold{font-size:.9rem}
-.svc.lead-svc .link-gold{color:var(--gold-bright)}
+.services-cue{display:none;margin:1.4rem 0 0;font-size:.84rem;letter-spacing:.03em;color:var(--ink-soft);text-align:center}
+.services-cue span{color:var(--gold)}
+.services-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1.2rem;margin-top:2.6rem}
+.svc{grid-column:span 2;border-radius:var(--r-lg);overflow:hidden;background:var(--navy);box-shadow:var(--shadow-soft);transition:box-shadow .3s var(--ease),transform .3s var(--ease)}
+.svc.lead-svc{grid-column:1/-1}
+.svc:hover{box-shadow:var(--shadow),0 0 0 1px rgba(198,162,78,.28);transform:translateY(-3px)}
+
+.svc-deck{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;height:330px}
+.svc-deck::-webkit-scrollbar{display:none}
+.svc-deck:focus-visible{outline:2px solid var(--gold-bright);outline-offset:-2px}
+.svc-slide{flex:0 0 100%;scroll-snap-align:start;position:relative;min-width:0}
+
+.svc-cover{cursor:pointer}
+.svc-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.svc-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,33,.12),rgba(8,18,33,.2) 45%,rgba(8,18,33,.88))}
+.svc-cover-txt{position:absolute;left:1.5rem;right:1.4rem;bottom:1.4rem;z-index:2}
+.svc-n{font:400 1.35rem/1 var(--serif);color:var(--gold-bright)}
+.svc-cover-txt h3{font:500 var(--fs-h3)/1.1 var(--serif);margin:.3rem 0 .35rem;color:var(--paper)}
+.svc-hook{margin:0;font-size:.95rem;line-height:1.45;color:rgba(247,243,234,.88);max-width:32ch}
+.lead-svc .svc-cover-txt{left:2.2rem;bottom:2rem}
+.lead-svc .svc-cover-txt h3{font-size:clamp(1.7rem,1.2rem+1.6vw,2.4rem)}
+.lead-svc .svc-hook{font-size:1.05rem;max-width:40ch}
+.svc-cue{position:absolute;top:1.1rem;right:1.1rem;z-index:2;display:inline-flex;align-items:center;
+  font:600 .72rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--paper);
+  background:rgba(12,29,51,.42);backdrop-filter:blur(6px);border:1px solid rgba(247,243,234,.3);padding:.5rem .8rem;border-radius:var(--pill)}
+.svc-cue i{font-style:normal;display:inline-block;transition:transform .5s var(--ease)}
+.svc-deck:hover .svc-cue i{transform:translateX(4px)}
+
+.svc-detail{background:linear-gradient(160deg,var(--navy-2),var(--navy));display:flex;flex-direction:column;justify-content:center;gap:.85rem;padding:1.8rem 1.7rem;height:100%}
+.svc-k{font:600 .72rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-bright)}
+.svc-detail p{margin:0;color:rgba(247,243,234,.87);font-size:.97rem;line-height:1.6;max-width:46ch}
+.svc-detail .link-gold{color:var(--gold-bright);font-size:.92rem}
+.svc-back{align-self:flex-start;margin-top:.2rem;background:none;border:0;color:rgba(247,243,234,.55);font:600 .82rem/1 var(--sans);cursor:pointer;padding:.35rem 0;transition:color .25s}
+.svc-back:hover{color:var(--paper)}
+.lead-svc .svc-detail{padding:2rem 2.2rem}
+.lead-svc .svc-detail p{max-width:62ch;font-size:1.06rem}
+
+.svc-dots{display:flex;gap:.45rem;justify-content:center;padding:.85rem 0 .95rem;background:var(--navy)}
+.svc-dots button{width:7px;height:7px;padding:0;border:0;border-radius:50%;background:rgba(247,243,234,.3);cursor:pointer;transition:background .3s var(--ease),width .3s var(--ease)}
+.svc-dots button.is-on{background:var(--gold-bright);width:20px;border-radius:4px}
+
+.scroll-prog{position:fixed;top:0;left:0;right:0;height:3px;transform:scaleX(var(--sp,0));transform-origin:0 50%;background:linear-gradient(90deg,var(--gold),var(--gold-bright));z-index:70;pointer-events:none}
+
+@media (max-width:1000px){
+  .services-grid{grid-template-columns:1fr;gap:1rem}
+  .svc,.svc.lead-svc{grid-column:1/-1}
+  .lead-svc .svc-detail p{font-size:1rem}
+}
+@media (max-width:760px){
+  .services-cue{display:block}
+  .svc-deck{height:300px}
+}
 
 /* ---------- Charter (single aircraft) ---------- */
 .charter{background:var(--sand)}

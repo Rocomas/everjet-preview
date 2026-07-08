@@ -28,6 +28,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div class="scroll-prog" id="scrollProg" aria-hidden="true"></div>
 
 <header class="site-header" id="header">
   <div class="container nav">
@@ -114,7 +115,7 @@
         <article class="pillar" data-p="3">
           <span class="p-k">Charter</span>
           <h3>Private Charter</h3>
-          <p>Our own Bombardier Global 5000, based in Hong Kong — chartered on trips that return home to Hong Kong.</p>
+          <p>Our own Bombardier Global 5000, Hong Kong based — chartered on routes to and from the city.</p>
         </article>
       </div>
     </div>
@@ -127,15 +128,91 @@
         <span class="eyebrow">What we do</span>
         <h2 class="h2" id="svc-h">Management first — with one point of contact.</h2>
       </div>
+      <p class="services-cue">Tap or swipe a card for more <span aria-hidden="true">→</span></p>
       <div class="services-grid">
         <article class="svc lead-svc reveal" data-n="01">
-          <h3>Aircraft Management</h3>
-          <p>Trouble-free, flexible and customised management of your aircraft. Operate under our Republic of San Marino AOC — commercial or private — or on the Cayman Islands (CAACI) registry. Simply enjoy a 24/7 flight department at your fingertip.</p>
-          <a class="link-gold" href="tel:+85221229018">Talk to us</a>
+          <div class="svc-deck" tabindex="0" aria-label="Aircraft Management — swipe or use the dots for detail">
+            <div class="svc-slide svc-cover">
+              <img class="svc-img" src="img/svc-manage.jpg" alt="Managed private jet over the sea at dusk" decoding="async">
+              <div class="svc-cover-txt">
+                <span class="svc-n">01</span>
+                <h3>Aircraft Management</h3>
+                <p class="svc-hook">A 24/7 flight department around your aircraft.</p>
+              </div>
+              <span class="svc-cue" aria-hidden="true">More&nbsp;<i>→</i></span>
+            </div>
+            <div class="svc-slide svc-detail">
+              <span class="svc-k">Aircraft Management</span>
+              <p>Trouble-free, customised management under our San Marino AOC — commercial or private — or the Cayman Islands (CAACI) registry. Crewing, budgets and oversight, so ownership stays effortless.</p>
+              <a class="link-gold" href="tel:+85221229018">Talk to us</a>
+              <button class="svc-back" type="button" aria-label="Back to summary">‹ Back</button>
+            </div>
+          </div>
+          <div class="svc-dots"><button class="is-on" type="button" aria-label="Show summary"></button><button type="button" aria-label="Show detail"></button></div>
         </article>
-        <article class="svc reveal" data-n="02"><h3>Flight Support Services</h3><p>Permits, handling, slots and concierge on the ground — the invisible work that makes every departure effortless.</p><a class="link-gold" href="tel:+85221229018">Talk to us</a></article>
-        <article class="svc reveal" data-d="1" data-n="03"><h3>Aircraft Acquisition</h3><p>Independent guidance through selection, inspection and purchase — with your interests, not a dealer's, at the centre.</p><a class="link-gold" href="tel:+85221229018">Talk to us</a></article>
-        <article class="svc reveal" data-n="04"><h3>Aircraft Charter</h3><p>On-demand private flights on our own Bombardier Global 5000, based in Hong Kong — arranged seamlessly, flown safely.</p><a class="link-gold" href="#charter">Plan a flight</a></article>
+
+        <article class="svc reveal" data-n="02">
+          <div class="svc-deck" tabindex="0" aria-label="Flight Support — swipe or use the dots for detail">
+            <div class="svc-slide svc-cover">
+              <img class="svc-img" src="img/svc-support.jpg" alt="Private jet in golden-hour flight" decoding="async">
+              <div class="svc-cover-txt">
+                <span class="svc-n">02</span>
+                <h3>Flight Support</h3>
+                <p class="svc-hook">The groundwork behind every departure.</p>
+              </div>
+              <span class="svc-cue" aria-hidden="true">More&nbsp;<i>→</i></span>
+            </div>
+            <div class="svc-slide svc-detail">
+              <span class="svc-k">Flight Support</span>
+              <p>Permits, ground handling, slots and crewing — coordinated worldwide so every flight leaves on time, without friction.</p>
+              <a class="link-gold" href="tel:+85221229018">Talk to us</a>
+              <button class="svc-back" type="button" aria-label="Back to summary">‹ Back</button>
+            </div>
+          </div>
+          <div class="svc-dots"><button class="is-on" type="button" aria-label="Show summary"></button><button type="button" aria-label="Show detail"></button></div>
+        </article>
+
+        <article class="svc reveal" data-d="1" data-n="03">
+          <div class="svc-deck" tabindex="0" aria-label="Aircraft Acquisition — swipe or use the dots for detail">
+            <div class="svc-slide svc-cover">
+              <img class="svc-img" src="img/svc-acquire.jpg" alt="Private jet cabin interior" decoding="async">
+              <div class="svc-cover-txt">
+                <span class="svc-n">03</span>
+                <h3>Aircraft Acquisition</h3>
+                <p class="svc-hook">Buying an aircraft, entirely on your side.</p>
+              </div>
+              <span class="svc-cue" aria-hidden="true">More&nbsp;<i>→</i></span>
+            </div>
+            <div class="svc-slide svc-detail">
+              <span class="svc-k">Aircraft Acquisition</span>
+              <p>Independent, owner-side advisory across the full purchase — aircraft selection, technical inspection and negotiation to close. Our only interest is yours.</p>
+              <a class="link-gold" href="tel:+85221229018">Talk to us</a>
+              <button class="svc-back" type="button" aria-label="Back to summary">‹ Back</button>
+            </div>
+          </div>
+          <div class="svc-dots"><button class="is-on" type="button" aria-label="Show summary"></button><button type="button" aria-label="Show detail"></button></div>
+        </article>
+
+        <article class="svc reveal" data-n="04">
+          <div class="svc-deck" tabindex="0" aria-label="Private Charter — swipe or use the dots for detail">
+            <div class="svc-slide svc-cover">
+              <img class="svc-img" src="img/svc-charter.jpg" alt="Bombardier Global 5000 in flight" decoding="async">
+              <div class="svc-cover-txt">
+                <span class="svc-n">04</span>
+                <h3>Private Charter</h3>
+                <p class="svc-hook">Our Global 5000, whenever you need it.</p>
+              </div>
+              <span class="svc-cue" aria-hidden="true">More&nbsp;<i>→</i></span>
+            </div>
+            <div class="svc-slide svc-detail">
+              <span class="svc-k">Private Charter</span>
+              <p>On-demand private flights on our own Bombardier Global 5000 — Hong Kong based, arranged seamlessly and flown to the IS-BAO safety standard.</p>
+              <a class="link-gold" href="#charter">Plan a flight</a>
+              <button class="svc-back" type="button" aria-label="Back to summary">‹ Back</button>
+            </div>
+          </div>
+          <div class="svc-dots"><button class="is-on" type="button" aria-label="Show summary"></button><button type="button" aria-label="Show detail"></button></div>
+        </article>
       </div>
     </div>
   </section>
@@ -146,7 +223,7 @@
       <div class="head reveal">
         <span class="eyebrow">One aircraft, based in Hong Kong</span>
         <h2 class="h2" id="charter-h">Charter our Global 5000.</h2>
-        <p class="lead">We operate a single aircraft for private charter — our own Bombardier Global 5000. It is based in Hong Kong, so every charter returns home to Hong Kong. Tell us the trip; an advisor confirms every detail in person.</p>
+        <p class="lead">We operate one aircraft for private charter — our own Bombardier Global 5000, based in Hong Kong. Tell us the trip; an advisor confirms every detail personally.</p>
       </div>
 
       <div class="charter-grid">
@@ -159,7 +236,7 @@
               <div><dt>Seats</dt><dd>Up to 13</dd></div>
               <div><dt>Range</dt><dd>≈ 9,600 km</dd></div>
               <div><dt>Home base</dt><dd>Hong Kong</dd></div>
-              <div><dt>Charters</dt><dd>Return to HK</dd></div>
+              <div><dt>Charters</dt><dd>To &amp; from HK</dd></div>
             </dl>
             <p class="base-note"><span aria-hidden="true">✦</span> <span><b>Why Hong Kong?</b> Our aircraft is home-based, so every charter departs from or returns to Hong Kong. Your advisor will build the routing around that.</span></p>
           </div>
