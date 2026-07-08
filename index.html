@@ -88,59 +88,53 @@
 
   <!-- SHOWCASE — pinned scrollytelling -->
   <section class="showcase" id="showcase" aria-label="What we do for your aircraft">
-    <div class="stage-wrap" id="stageWrap" data-stage="0">
-      <div class="stage-bg" aria-hidden="true"><img src="img/hero-jet.jpg" alt="" width="600" height="516"></div>
-
-      <div class="stage-top">
+    <div class="stage-bg" aria-hidden="true"><img src="img/hero-jet.jpg" alt="" width="600" height="516"></div>
+    <div class="fid-flow">
+      <div class="stage-hud">
         <span class="eyebrow">One team · four responsibilities</span>
-        <span class="fid-live"><i></i> 24/7 flight department</span>
+        <div class="fid-board" id="fidBoard" aria-label="Our responsibilities — tap to explore">
+          <button class="fid-cell" type="button" data-go="0"><span class="fid-num">01</span><span class="fid-lbl">Manage</span></button>
+          <button class="fid-cell" type="button" data-go="1"><span class="fid-num">02</span><span class="fid-lbl">Operate</span></button>
+          <button class="fid-cell" type="button" data-go="2"><span class="fid-num">03</span><span class="fid-lbl">Maintain</span></button>
+          <button class="fid-cell" type="button" data-go="3"><span class="fid-num">04</span><span class="fid-lbl">Charter</span></button>
+        </div>
       </div>
-
-      <div class="fid-stage">
-        <article class="resp" data-p="0">
-          <span class="resp-n">01</span>
-          <div class="resp-body">
-            <span class="resp-kicker">Aircraft Management</span>
-            <h3 class="resp-word">Manage</h3>
-            <p class="resp-desc">A customised flight department built around your aircraft — crewing, budgets and oversight, so ownership stays trouble-free.</p>
-            <span class="resp-chip">A 24/7 flight department</span>
-          </div>
-        </article>
-        <article class="resp" data-p="1">
-          <span class="resp-n">02</span>
-          <div class="resp-body">
-            <span class="resp-kicker">Flight Support</span>
-            <h3 class="resp-word">Operate</h3>
-            <p class="resp-desc">Permits, ground handling, slots and crew — every flight operated under our San Marino AOC, commercial or private.</p>
-            <span class="resp-chip">San Marino AOC</span>
-          </div>
-        </article>
-        <article class="resp" data-p="2">
-          <span class="resp-n">03</span>
-          <div class="resp-body">
-            <span class="resp-kicker">Safety &amp; Oversight</span>
-            <h3 class="resp-word">Maintain</h3>
-            <p class="resp-desc">Your aircraft is operated to the IS-BAO safety standard by an AsBAA member — the highest level of safety, made routine.</p>
-            <span class="resp-chip">IS-BAO standard</span>
-          </div>
-        </article>
-        <article class="resp" data-p="3">
-          <span class="resp-n">04</span>
-          <div class="resp-body">
-            <span class="resp-kicker">Private Charter</span>
-            <h3 class="resp-word">Charter</h3>
-            <p class="resp-desc">Our own Bombardier Global 5000, based in Hong Kong — available for private charter whenever the owner isn't flying.</p>
-            <span class="resp-chip">Global 5000 · Hong Kong</span>
-          </div>
-        </article>
-      </div>
-
-      <div class="fid-board" id="fidBoard" aria-label="Our responsibilities — tap to explore">
-        <button class="fid-cell" type="button" data-go="0"><span class="fid-num">01</span><span class="fid-lbl">Manage</span><span class="fid-bar"></span></button>
-        <button class="fid-cell" type="button" data-go="1"><span class="fid-num">02</span><span class="fid-lbl">Operate</span><span class="fid-bar"></span></button>
-        <button class="fid-cell" type="button" data-go="2"><span class="fid-num">03</span><span class="fid-lbl">Maintain</span><span class="fid-bar"></span></button>
-        <button class="fid-cell" type="button" data-go="3"><span class="fid-num">04</span><span class="fid-lbl">Charter</span><span class="fid-bar"></span></button>
-      </div>
+      <article class="resp" data-p="0">
+        <span class="resp-n">01</span>
+        <div class="resp-body">
+          <span class="resp-kicker">Aircraft Management</span>
+          <h3 class="resp-word">Manage</h3>
+          <p class="resp-desc">A customised flight department built around your aircraft — crewing, budgets and oversight, so ownership stays trouble-free.</p>
+          <span class="resp-chip">A 24/7 flight department</span>
+        </div>
+      </article>
+      <article class="resp" data-p="1">
+        <span class="resp-n">02</span>
+        <div class="resp-body">
+          <span class="resp-kicker">Flight Support</span>
+          <h3 class="resp-word">Operate</h3>
+          <p class="resp-desc">Permits, ground handling, slots and crew — every flight operated under our San Marino AOC, commercial or private.</p>
+          <span class="resp-chip">San Marino AOC</span>
+        </div>
+      </article>
+      <article class="resp" data-p="2">
+        <span class="resp-n">03</span>
+        <div class="resp-body">
+          <span class="resp-kicker">Safety &amp; Oversight</span>
+          <h3 class="resp-word">Maintain</h3>
+          <p class="resp-desc">Your aircraft is operated to the IS-BAO safety standard by an AsBAA member — the highest level of safety, made routine.</p>
+          <span class="resp-chip">IS-BAO standard</span>
+        </div>
+      </article>
+      <article class="resp" data-p="3">
+        <span class="resp-n">04</span>
+        <div class="resp-body">
+          <span class="resp-kicker">Private Charter</span>
+          <h3 class="resp-word">Charter</h3>
+          <p class="resp-desc">Our own Bombardier Global 5000, based in Hong Kong — available for private charter whenever the owner isn't flying.</p>
+          <span class="resp-chip">Global 5000 · Hong Kong</span>
+        </div>
+      </article>
     </div>
   </section>
 

@@ -165,34 +165,26 @@
 
   /* ---------- Showcase: scroll-driven pinned pillars ---------- */
   const showcase = $('.showcase');
-  const stageWrap = $('#stageWrap');
-  const cells = $$('#fidBoard .fid-cell');
-
-  if (showcase && stageWrap) {
-    const STAGES = 4;
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      const total = showcase.offsetHeight - innerHeight;
-      const p = total > 0 ? clamp(-showcase.getBoundingClientRect().top / total, 0, 1) : 0;
-      stageWrap.style.setProperty('--p', p.toFixed(4));
-      const stageF = p * STAGES;
-      const stage = clamp(Math.floor(stageF * 0.999), 0, STAGES - 1);
-      if (stageWrap.dataset.stage !== String(stage)) stageWrap.dataset.stage = String(stage);
-      const cp = clamp(stageF - stage, 0, 1);
-      cells.forEach((c, i) => {
-        c.classList.toggle('is-live', i === stage);
-        c.style.setProperty('--cp', i < stage ? '1' : i === stage ? cp.toFixed(3) : '0');
-      });
-    };
-    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
-    addEventListener('resize', update, { passive: true });
-    // tap a board cell to jump to that responsibility
-    cells.forEach((c, i) => c.addEventListener('click', () => {
-      const total = showcase.offsetHeight - innerHeight;
-      scrollTo({ top: Math.round(showcase.offsetTop + total * ((i + 0.5) / STAGES)), behavior: 'smooth' });
-    }));
-    update();
+  const respBlocks = $$('.showcase .resp');
+  const boardCells = $$('#fidBoard .fid-cell');
+  if (showcase && respBlocks.length) {
+    const setLive = idx => { if (idx >= 0) boardCells.forEach((c, i) => c.classList.toggle('is-live', i === idx)); };
+    if ('IntersectionObserver' in window) {
+      // reveal each block as it enters (low threshold = robust), then stop watching it
+      const revealIO = new IntersectionObserver((es, o) => es.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); o.unobserve(e.target); }
+      }), { threshold: 0.12 });
+      // light up the board cell of whichever block is crossing the viewport centre
+      const activeIO = new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting) setLive(respBlocks.indexOf(e.target));
+      }), { rootMargin: '-45% 0px -45% 0px' });
+      respBlocks.forEach(b => { revealIO.observe(b); activeIO.observe(b); });
+    } else {
+      respBlocks.forEach(b => b.classList.add('in'));
+    }
+    // tap a board cell to glide to that responsibility (no scroll hijack)
+    boardCells.forEach((c, i) => c.addEventListener('click', () => respBlocks[i].scrollIntoView({ behavior: 'smooth', block: 'center' })));
+    setLive(0);
   }
 
   /* ---------- Charter organizer ---------- */
