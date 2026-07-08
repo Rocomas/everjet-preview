@@ -182,8 +182,8 @@
     if (availNote) {
       const d = $('#date').value;
       if (!d) { availNote.textContent = ''; availNote.className = 'avail'; }
-      else if (spanBlocked(d, retEl.value)) { availNote.textContent = '✕  Aircraft committed on these dates — please choose another'; availNote.className = 'avail is-blocked'; }
-      else { availNote.textContent = '✓  Aircraft available for your dates'; availNote.className = 'avail is-ok'; }
+      else if (spanBlocked(d, retEl.value)) { availNote.textContent = '✕  The aircraft is committed on these dates — please choose different dates'; availNote.className = 'avail is-blocked'; }
+      else { availNote.textContent = '✓  The aircraft is available on your dates'; availNote.className = 'avail is-ok'; }
     }
     updateEstimate();
   }
@@ -207,7 +207,7 @@
     estWrap.hidden = false;
     if (spanBlocked($('#date').value, retEl.value)) {
       estVal.textContent = 'Unavailable';
-      estFine.textContent = 'Aircraft committed on these dates';
+      estFine.textContent = 'The aircraft is committed on these dates';
       return;
     }
     const e = computeEstimate();
@@ -239,14 +239,14 @@
       const d = $('#date').value;
       if (!d) fail('date', 'Pick a departure date');
       else if (d < iso) fail('date', 'Choose a future date');
-      else if (retEl.value && retEl.value < d) fail('date', 'Return is before departure');
-      else if (spanBlocked(d, retEl.value)) fail('date', 'Our aircraft is committed on these dates — please choose others.');
+      else if (retEl.value && retEl.value < d) fail('date', 'The return date is before departure');
+      else if (spanBlocked(d, retEl.value)) fail('date', 'The aircraft is committed on these dates — please choose different dates.');
     }
     if (n === 2) {
       ['name','email','phone'].forEach(id => setErr(id, '')); setErr('consent', '');
       if (!$('#name').value.trim()) fail('name', 'Your name, please');
       if (!emailOk($('#email').value.trim())) fail('email', 'A valid email so we can reply');
-      if ($('#phone').value.replace(/\D/g, '').length < 6) fail('phone', 'A contact number');
+      if ($('#phone').value.replace(/\D/g, '').length < 6) fail('phone', 'A contact number, please');
       if (!$('#consent').checked) { setErr('consent', 'Please tick to let us reply'); ok = false; firstBad = firstBad || $('#consent'); }
     }
     if (firstBad) firstBad.focus();

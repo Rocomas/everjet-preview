@@ -261,8 +261,12 @@ section[id]{scroll-margin-top:88px}
 .field input,.field select,.field textarea{
   font:400 .98rem/1.4 var(--sans);color:var(--ink);background:var(--white);
   border:1px solid var(--line);border-radius:var(--r-sm);padding:.72rem .85rem;width:100%;
+  min-width:0;max-width:100%;
   transition:border-color .25s,box-shadow .25s;
 }
+/* iOS: date/time widgets refuse to shrink below intrinsic width unless appearance is stripped */
+.field input[type="date"],.field input[type="time"]{-webkit-appearance:none;appearance:none;min-height:2.9rem}
+input::-webkit-date-and-time-value{text-align:left}
 .field input::placeholder,.field textarea::placeholder{color:#98a2b0}
 .field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,134,63,.15)}
 .field textarea{resize:vertical}
@@ -364,8 +368,9 @@ section[id]{scroll-margin-top:88px}
   .nav-links,.nav-right .lang,.nav-right>.btn{display:none}
   .nav-toggle{display:block}
   body.nav-open{overflow:hidden}
-  .grid-2,.grid-3,.services-grid,.safety-inner,.about-inner,.summary-grid,.cta-actions{grid-template-columns:1fr}
-  .grid-3{gap:.9rem}
+  .grid-2,.services-grid,.safety-inner,.about-inner,.summary-grid,.cta-actions{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr 1fr;gap:.9rem}
+  .field input,.field select,.field textarea{font-size:16px} /* ≥16px stops iOS zooming the page on focus */
   .org-nav{flex-direction:column-reverse;align-items:stretch}
   .org-nav .btn{width:100%}
   .est{margin:0 0 .4rem;text-align:center;align-items:center}
