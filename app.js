@@ -227,21 +227,18 @@
   $('#date').addEventListener('change', updateAvailability);
   retEl.addEventListener('change', updateAvailability);
 
-  // Priced so the aircraft always ends in Hong Kong: trips TO Hong Kong are one leg home;
-  // anything else is the outbound leg plus the flight back to base.
+  // Illustrative price tuned to Ever Jet's own quote calculator: a fixed base (repositioning,
+  // handling, permits, crew) plus an hourly rate — its client quotes fit ≈ US$66k + US$4k/hr,
+  // here converted to HKD (≈7.8). The Hong Kong based jet flies out to the farthest point and back.
+  const PRICE = { baseLo: 450000, rateLo: 27000, baseHi: 600000, rateHi: 40000 };
   function computeEstimate() {
     const from = state.fromCode, to = state.toCode;
     if (!from || !to || from === to) return null;
-    if (to === HOME) {
-      const h = hoursFor(from, HOME);
-      if (h == null) return null;
-      return { lo: round5(JET.low * h), hi: round5(JET.high * h), h, inbound: true };
-    }
-    const back = hoursFor(to, HOME);
-    if (back == null) return null;
-    const outLeg = hoursFor(from, to);
-    const total = Math.round(((outLeg != null ? outLeg : back) + back) * 10) / 10;
-    return { lo: round5(JET.low * total), hi: round5(JET.high * total), h: total, inbound: false };
+    const far = (to !== HOME) ? to : from;        // the non-Hong-Kong endpoint
+    const oneWay = hoursFor(HOME, far);
+    if (oneWay == null) return null;
+    const h = Math.round(oneWay * 2 * 10) / 10;   // round-trip flying hours from Hong Kong
+    return { lo: round5(PRICE.baseLo + PRICE.rateLo * h), hi: round5(PRICE.baseHi + PRICE.rateHi * h), h };
   }
 
   function updateEstimate() {
@@ -256,9 +253,7 @@
     const e = computeEstimate();
     if (e) {
       estVal.textContent = `${money(e.lo)} – ${money(e.hi)}`;
-      estFine.textContent = e.inbound
-        ? `≈ ${e.h} h flying · arriving Hong Kong · illustrative`
-        : `≈ ${e.h} h flying · incl. return to Hong Kong · illustrative`;
+      estFine.textContent = `≈ ${e.h} h flying · return trip from Hong Kong · illustrative`;
     } else {
       estVal.textContent = 'On request';
       estFine.textContent = 'Your advisor will confirm this route';
