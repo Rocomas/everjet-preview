@@ -12,6 +12,16 @@
   const HOME = 'HKG';
   const JET = { name: 'Bombardier Global 5000', seats: '13', range: '≈ 9,600 km', low: 98000, high: 140000 };
 
+  // Dates the aircraft is committed to the owner — zero charter availability.
+  // Inclusive ISO ranges (single day = from === to). Update as the schedule firms up.
+  const BLOCKED = [
+    { from: '2026-07-14', to: '2026-07-18' },
+    { from: '2026-07-28', to: '2026-07-30' },
+    { from: '2026-08-11', to: '2026-08-15' },
+  ];
+  // A charter holds the aircraft for its whole span; blocked if that span hits any committed range.
+  const spanBlocked = (a, b) => { if (!a) return false; const end = (b && b >= a) ? b : a; return BLOCKED.some(r => a <= r.to && end >= r.from); };
+
   // [code, city, one-way flying hours from Hong Kong]. Any airport can be typed; known
   // destinations quote instantly, anything else falls back to "on request".
   const DEST = [
@@ -167,6 +177,19 @@
   $('#from').addEventListener('change', () => { syncCodes(); updateEstimate(); });
   $('#to').addEventListener('change', () => { syncCodes(); updateEstimate(); });
 
+  const availNote = $('#availNote');
+  function updateAvailability() {
+    if (availNote) {
+      const d = $('#date').value;
+      if (!d) { availNote.textContent = ''; availNote.className = 'avail'; }
+      else if (spanBlocked(d, retEl.value)) { availNote.textContent = '✕  Aircraft committed on these dates — please choose another'; availNote.className = 'avail is-blocked'; }
+      else { availNote.textContent = '✓  Aircraft available for your dates'; availNote.className = 'avail is-ok'; }
+    }
+    updateEstimate();
+  }
+  $('#date').addEventListener('change', updateAvailability);
+  retEl.addEventListener('change', updateAvailability);
+
   // Priced there-and-back to Hong Kong; needs a known destination, any origin allowed.
   function computeEstimate() {
     const to = state.toCode;
@@ -182,6 +205,11 @@
     if (!estWrap) return;
     if (!$('#from').value.trim() || !$('#to').value.trim()) { estWrap.hidden = true; return; }
     estWrap.hidden = false;
+    if (spanBlocked($('#date').value, retEl.value)) {
+      estVal.textContent = 'Unavailable';
+      estFine.textContent = 'Aircraft committed on these dates';
+      return;
+    }
     const e = computeEstimate();
     if (e) {
       estVal.textContent = `${money(e.lo)} – ${money(e.hi)}`;
@@ -211,7 +239,8 @@
       const d = $('#date').value;
       if (!d) fail('date', 'Pick a departure date');
       else if (d < iso) fail('date', 'Choose a future date');
-      if (retEl.value && retEl.value < d) fail('date', 'Return is before departure');
+      else if (retEl.value && retEl.value < d) fail('date', 'Return is before departure');
+      else if (spanBlocked(d, retEl.value)) fail('date', 'Our aircraft is committed on these dates — please choose others.');
     }
     if (n === 2) {
       ['name','email','phone'].forEach(id => setErr(id, '')); setErr('consent', '');
@@ -308,6 +337,7 @@
     form.reset();
     state.fromCode = 'HKG'; state.toCode = null; step = 1;
     $('#from').value = 'HKG — Hong Kong';
+    if (availNote) { availNote.textContent = ''; availNote.className = 'avail'; }
     summaryPane.hidden = true; orgNav.hidden = false;
     if (paxSel) paxSel.value = '4';
     render();
