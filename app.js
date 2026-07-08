@@ -8,31 +8,45 @@
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
 
   /* ---------- Reference data ---------- */
-  const AIRPORTS = [
-    ['HKG','Hong Kong'],['MFM','Macau'],['SZX','Shenzhen'],['CAN','Guangzhou'],
-    ['TPE','Taipei'],['PVG','Shanghai'],['PEK','Beijing'],['MNL','Manila'],
-    ['CEB','Cebu'],['BKK','Bangkok'],['HKT','Phuket'],['SGN','Ho Chi Minh City'],
-    ['HAN','Hanoi'],['DAD','Da Nang'],['REP','Siem Reap'],['PNH','Phnom Penh'],
-    ['SIN','Singapore'],['KUL','Kuala Lumpur'],['DPS','Bali (Denpasar)'],['ICN','Seoul'],
-    ['NRT','Tokyo Narita'],['HND','Tokyo Haneda'],['KIX','Osaka'],['SYD','Sydney'],
-    ['DXB','Dubai'],['MLE','Maldives'],['LHR','London'],['LAX','Los Angeles'],
-  ];
-  const CITY = Object.fromEntries(AIRPORTS.map(([c, n]) => [c, n]));
-
-  // The aircraft is Hong Kong based; every charter must return home to Hong Kong.
+  // The aircraft is Hong Kong based; every charter is priced there-and-back to Hong Kong.
   const HOME = 'HKG';
-
-  // The single charter aircraft.
   const JET = { name: 'Bombardier Global 5000', seats: '13', range: '≈ 9,600 km', low: 98000, high: 140000 };
 
-  // one-way flying hours from/to Hong Kong (symmetric lookup)
-  const HOURS = {
-    'HKG-MFM':0.4,'HKG-SZX':0.5,'HKG-CAN':0.6,'HKG-TPE':1.7,'HKG-HAN':2.0,'HKG-MNL':2.2,
-    'HKG-DAD':2.2,'HKG-PVG':2.4,'HKG-SGN':2.5,'HKG-REP':2.6,'HKG-PNH':2.7,'HKG-BKK':2.8,
-    'HKG-CEB':3.0,'HKG-PEK':3.2,'HKG-ICN':3.4,'HKG-HKT':3.5,'HKG-KIX':3.8,'HKG-KUL':4.0,
-    'HKG-SIN':4.0,'HKG-NRT':4.4,'HKG-HND':4.4,'HKG-DPS':5.2,'HKG-MLE':6.2,'HKG-DXB':8.0,
-    'HKG-SYD':9.2,'HKG-LHR':12.8,'HKG-LAX':13.0,
-  };
+  // [code, city, one-way flying hours from Hong Kong]. Any airport can be typed; known
+  // destinations quote instantly, anything else falls back to "on request".
+  const DEST = [
+    ['HKG','Hong Kong',0],
+    ['MFM','Macau',0.4],['ZUH','Zhuhai',0.5],['SZX','Shenzhen',0.5],['CAN','Guangzhou',0.6],
+    ['NNG','Nanning',1.2],['HAK','Haikou',1.3],['FOC','Fuzhou',1.4],['XMN','Xiamen',1.4],
+    ['SYX','Sanya',1.5],['KWL','Guilin',1.5],['KHH','Kaohsiung',1.5],['CSX','Changsha',1.6],
+    ['RMQ','Taichung',1.6],['TPE','Taipei',1.7],['TSA','Taipei Songshan',1.7],['HAN','Hanoi',2.0],
+    ['WUH','Wuhan',2.0],['MNL','Manila',2.2],['DAD','Da Nang',2.2],['HGH','Hangzhou',2.2],
+    ['KMG','Kunming',2.2],['NKG','Nanjing',2.2],['PVG','Shanghai',2.4],['CKG','Chongqing',2.4],
+    ['SGN','Ho Chi Minh City',2.5],['OKA','Okinawa',2.5],['REP','Siem Reap',2.6],['CTU','Chengdu',2.6],
+    ['VTE','Vientiane',2.6],['LPQ','Luang Prabang',2.6],['PNH','Phnom Penh',2.7],['TNA','Jinan',2.7],
+    ['BKK','Bangkok',2.8],['DMK','Bangkok Don Mueang',2.8],['RGN','Yangon',2.8],['TAO','Qingdao',2.8],
+    ['BKI','Kota Kinabalu',2.8],['BWN','Bandar Seri Begawan',2.8],['CEB','Cebu',3.0],['CNX','Chiang Mai',3.0],
+    ['USM','Koh Samui',3.0],['DLC','Dalian',3.0],['XIY',"Xi'an",3.0],['PEK','Beijing',3.2],
+    ['PKX','Beijing Daxing',3.2],['PUS','Busan',3.2],['CJU','Jeju',3.3],['KBV','Krabi',3.3],
+    ['SHE','Shenyang',3.3],['ICN','Seoul Incheon',3.4],['GMP','Seoul Gimpo',3.4],['FUK','Fukuoka',3.4],
+    ['HKT','Phuket',3.5],['PEN','Penang',3.5],['LGK','Langkawi',3.7],['HRB','Harbin',3.8],
+    ['KIX','Osaka',3.8],['KUL','Kuala Lumpur',4.0],['SIN','Singapore',4.0],['DAC','Dhaka',4.0],
+    ['NGO','Nagoya',4.0],['NRT','Tokyo Narita',4.4],['HND','Tokyo Haneda',4.4],['GUM','Guam',4.5],
+    ['CGK','Jakarta',4.5],['KTM','Kathmandu',4.5],['SUB','Surabaya',4.7],['URC','Urumqi',4.8],
+    ['CTS','Sapporo',5.0],['DPS','Bali (Denpasar)',5.2],['BLR','Bengaluru',5.5],['HYD','Hyderabad',5.5],
+    ['CMB','Colombo',5.5],['DEL','Delhi',6.0],['BOM','Mumbai',6.0],['MLE','Maldives',6.2],
+    ['PER','Perth',7.5],['DXB','Dubai',8.0],['AUH','Abu Dhabi',8.2],['DOH','Doha',8.3],
+    ['BNE','Brisbane',8.8],['RUH','Riyadh',9.0],['SYD','Sydney',9.2],['MEL','Melbourne',9.5],
+    ['HNL','Honolulu',10.5],['NAN','Nadi',10.5],['IST','Istanbul',11.0],['AKL','Auckland',11.5],
+    ['MUC','Munich',12.3],['FRA','Frankfurt',12.5],['YVR','Vancouver',12.5],['SEA','Seattle',12.5],
+    ['LHR','London',12.8],['AMS','Amsterdam',12.8],['CDG','Paris',13.0],['ZRH','Zurich',13.0],
+    ['FCO','Rome',13.0],['MXP','Milan',13.0],['LAX','Los Angeles',13.0],['SFO','San Francisco',13.0],
+    ['GVA','Geneva',13.2],['BCN','Barcelona',13.8],['MAD','Madrid',14.0],['ORD','Chicago',15.0],
+    ['JFK','New York',15.5],
+  ];
+  const AIRPORTS = DEST.map(([c, n]) => [c, n]);
+  const CITY = Object.fromEntries(AIRPORTS);
+  const HOURS = Object.fromEntries(DEST.filter(([c]) => c !== 'HKG').map(([c, n, h]) => ['HKG-' + c, h]));
   const hoursFor = (a, b) => (!a || !b) ? null : (HOURS[a + '-' + b] ?? HOURS[b + '-' + a] ?? null);
 
   const money = n => 'HK$' + Math.round(n).toLocaleString('en-US');
@@ -132,7 +146,7 @@
   const form = $('#charterForm');
   if (!form) return;
 
-  const state = { trip: 'round', fromCode: null, toCode: null };
+  const state = { fromCode: 'HKG', toCode: null };
   let step = 1;
 
   const stepEls = $$('.step', form);
@@ -142,18 +156,9 @@
   const estWrap = $('#estWrap'), estVal = $('#estVal'), estFine = estWrap && estWrap.querySelector('.est-fine');
   const summaryPane = $('#summaryPane');
 
-  // Pre-fill the base to signal the HK/Japan rule.
+  // Pre-fill Hong Kong as the default From — editable to any airport.
   $('#from').value = 'HKG — Hong Kong';
   state.fromCode = 'HKG';
-
-  // trip segmented control
-  $$('#tripSeg .seg').forEach(b => b.addEventListener('click', () => {
-    $$('#tripSeg .seg').forEach(x => { x.classList.remove('is-on'); x.setAttribute('aria-selected', 'false'); });
-    b.classList.add('is-on'); b.setAttribute('aria-selected', 'true');
-    state.trip = b.dataset.trip;
-    $('#returnField').hidden = state.trip !== 'round';
-    updateEstimate();
-  }));
 
   function syncCodes() {
     state.fromCode = resolveCode($('#from').value);
@@ -162,24 +167,28 @@
   $('#from').addEventListener('change', () => { syncCodes(); updateEstimate(); });
   $('#to').addEventListener('change', () => { syncCodes(); updateEstimate(); });
 
+  // Priced there-and-back to Hong Kong; needs a known destination, any origin allowed.
   function computeEstimate() {
-    const h = hoursFor(state.fromCode, state.toCode);
-    if (!h) return null;
-    const legs = state.trip === 'round' ? 2 : 1;
-    return { lo: round5(JET.low * h * legs), hi: round5(JET.high * h * legs), h, legs };
+    const to = state.toCode;
+    if (!to || to === HOME) return null;
+    const back = hoursFor(to, HOME);              // destination -> Hong Kong
+    if (back == null) return null;
+    const outLeg = hoursFor(state.fromCode, to);  // From -> destination, if priceable
+    const total = Math.round(((outLeg != null ? outLeg : back) + back) * 10) / 10;
+    return { lo: round5(JET.low * total), hi: round5(JET.high * total), h: total };
   }
 
   function updateEstimate() {
     if (!estWrap) return;
-    if (!state.fromCode || !state.toCode) { estWrap.hidden = true; return; }
+    if (!$('#from').value.trim() || !$('#to').value.trim()) { estWrap.hidden = true; return; }
     estWrap.hidden = false;
     const e = computeEstimate();
     if (e) {
       estVal.textContent = `${money(e.lo)} – ${money(e.hi)}`;
-      estFine.textContent = `≈ ${e.h} h flying · ${e.legs === 2 ? 'round trip' : 'one way'} · illustrative`;
+      estFine.textContent = `≈ ${e.h} h flying · incl. return to Hong Kong · illustrative`;
     } else {
       estVal.textContent = 'On request';
-      estFine.textContent = 'Confirmed by your advisor';
+      estFine.textContent = 'Your advisor will confirm this route';
     }
   }
 
@@ -198,17 +207,11 @@
       setErr('from', ''); setErr('to', ''); setErr('date', '');
       syncCodes();
       if (!$('#from').value.trim()) fail('from', 'Where are you departing from?');
-      if (!$('#to').value.trim()) fail('to', 'Where are you heading?');
-      // HK-home rule: round trips depart from HK (and so return); one-ways must end in HK.
-      if (state.trip === 'round') {
-        if (state.fromCode !== HOME) fail('from', 'Round-trip charters depart from and return to Hong Kong — set Hong Kong as your start.');
-      } else if (state.toCode !== HOME) {
-        fail('to', 'One-way charters must return to Hong Kong — set Hong Kong as your destination.');
-      }
+      if (!$('#to').value.trim()) fail('to', 'Where would you like to go?');
       const d = $('#date').value;
       if (!d) fail('date', 'Pick a departure date');
       else if (d < iso) fail('date', 'Choose a future date');
-      if (state.trip === 'round' && retEl.value && retEl.value < d) fail('date', 'Return is before departure');
+      if (retEl.value && retEl.value < d) fail('date', 'Return is before departure');
     }
     if (n === 2) {
       ['name','email','phone'].forEach(id => setErr(id, '')); setErr('consent', '');
@@ -260,14 +263,12 @@
   function buildRequest() {
     const from = state.fromCode ? label(state.fromCode) : $('#from').value.trim();
     const to = state.toCode ? label(state.toCode) : $('#to').value.trim();
-    const trip = state.trip === 'round' ? 'Round trip' : 'One way';
     const e = computeEstimate();
     const est = e ? `${money(e.lo)} – ${money(e.hi)} (indicative)` : 'On request';
     return {
       Aircraft: JET.name,
-      Trip: trip,
-      Route: `${from}  →  ${to}`,
-      Departure: `${$('#date').value}${$('#time').value ? ' · ' + $('#time').value : ''}${state.trip === 'round' && retEl.value ? '  ·  returning ' + retEl.value : ''}`,
+      Route: `${from}  →  ${to}  →  Hong Kong (HKG)`,
+      Departure: `${$('#date').value}${$('#time').value ? ' · ' + $('#time').value : ''}${retEl.value ? '  ·  returning ' + retEl.value : ''}`,
       Passengers: $('#pax').value,
       'Indicative estimate': est,
       Contact: `${$('#name').value.trim()} · ${$('#email').value.trim()} · ${$('#phone').value.trim()} (prefers ${$('#pref').value})`,
@@ -305,10 +306,8 @@
 
   $('#newBtn').addEventListener('click', () => {
     form.reset();
-    state.fromCode = 'HKG'; state.toCode = null; state.trip = 'round'; step = 1;
+    state.fromCode = 'HKG'; state.toCode = null; step = 1;
     $('#from').value = 'HKG — Hong Kong';
-    $$('#tripSeg .seg').forEach((x, i) => { x.classList.toggle('is-on', i === 0); x.setAttribute('aria-selected', String(i === 0)); });
-    $('#returnField').hidden = false;
     summaryPane.hidden = true; orgNav.hidden = false;
     if (paxSel) paxSel.value = '4';
     render();

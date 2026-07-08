@@ -256,17 +256,14 @@
 
             <!-- STEP 1 -->
             <fieldset class="step is-active" data-step="1">
-              <div class="segment" role="tablist" aria-label="Trip type" id="tripSeg">
-                <button type="button" role="tab" class="seg is-on" data-trip="round" aria-selected="true">Round trip</button>
-                <button type="button" role="tab" class="seg" data-trip="oneway" aria-selected="false">One way</button>
-              </div>
               <div class="grid-2">
-                <div class="field"><label for="from">From</label><input id="from" list="airports" placeholder="City or airport" autocomplete="off"><p class="err" data-for="from"></p></div>
-                <div class="field"><label for="to">To</label><input id="to" list="airports" placeholder="City or airport" autocomplete="off"><p class="err" data-for="to"></p></div>
+                <div class="field"><label for="from">From</label><input id="from" list="airports" placeholder="Any city or airport" autocomplete="off"><p class="err" data-for="from"></p></div>
+                <div class="field"><label for="to">To</label><input id="to" list="airports" placeholder="Any city or airport" autocomplete="off"><p class="err" data-for="to"></p></div>
               </div>
+              <p class="route-note"><span class="route-pill">↩ Returns to Hong Kong</span> Pick any two airports — your jet always flies home to HKG.</p>
               <div class="grid-3">
                 <div class="field"><label for="date">Departure</label><input id="date" type="date"><p class="err" data-for="date"></p></div>
-                <div class="field" id="returnField"><label for="returnDate">Return</label><input id="returnDate" type="date"></div>
+                <div class="field" id="returnField"><label for="returnDate">Return <span class="muted">(optional)</span></label><input id="returnDate" type="date"></div>
                 <div class="field"><label for="time">Time</label><input id="time" type="time" value="10:00"></div>
                 <div class="field"><label for="pax">Passengers</label><select id="pax" aria-label="Passengers"></select></div>
               </div>
