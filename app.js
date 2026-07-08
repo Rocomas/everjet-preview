@@ -59,7 +59,16 @@
   const HOURS = Object.fromEntries(DEST.filter(([c]) => c !== 'HKG').map(([c, n, h]) => ['HKG-' + c, h]));
   const hoursFor = (a, b) => (!a || !b) ? null : (HOURS[a + '-' + b] ?? HOURS[b + '-' + a] ?? null);
 
-  const money = n => 'HK$' + Math.round(n).toLocaleString('en-US');
+  // Quote currencies — indicative FX vs HKD (HKD pegged ~7.8 to USD). Selectable on the estimate.
+  const CURRENCIES = [
+    ['HKD','HK$',1], ['USD','US$',0.128], ['EUR','€',0.118], ['GBP','£',0.101],
+    ['CNY','CN¥',0.92], ['JPY','JP¥',19.5], ['SGD','S$',0.172], ['AUD','A$',0.196],
+    ['AED','AED ',0.470], ['CHF','CHF ',0.114], ['CAD','C$',0.175], ['THB','฿',4.55],
+  ];
+  const CUR = Object.fromEntries(CURRENCIES.map(([c, s, r]) => [c, { sym: s, rate: r }]));
+  let currency = 'HKD';
+  const niceRound = n => { const s = n >= 1e7 ? 5e5 : n >= 1e6 ? 5e4 : n >= 1e5 ? 5e3 : n >= 1e4 ? 1e3 : 500; return Math.round(n / s) * s; };
+  const money = hkd => { const c = CUR[currency]; return c.sym + niceRound(hkd * c.rate).toLocaleString('en-US'); };
   const round5 = n => Math.round(n / 5000) * 5000;
   const label = code => code && CITY[code] ? `${code} — ${CITY[code]}` : '';
 
@@ -157,7 +166,7 @@
   /* ---------- Showcase: scroll-driven pinned pillars ---------- */
   const showcase = $('.showcase');
   const stageWrap = $('#stageWrap');
-  const scrollcue = $('#scrollcue');
+  const cells = $$('#fidBoard .fid-cell');
 
   if (showcase && stageWrap) {
     const STAGES = 4;
@@ -167,12 +176,22 @@
       const total = showcase.offsetHeight - innerHeight;
       const p = total > 0 ? clamp(-showcase.getBoundingClientRect().top / total, 0, 1) : 0;
       stageWrap.style.setProperty('--p', p.toFixed(4));
-      const stage = clamp(Math.floor(p * STAGES * 0.999), 0, STAGES - 1);
+      const stageF = p * STAGES;
+      const stage = clamp(Math.floor(stageF * 0.999), 0, STAGES - 1);
       if (stageWrap.dataset.stage !== String(stage)) stageWrap.dataset.stage = String(stage);
-      if (scrollcue) scrollcue.style.opacity = String(clamp(1 - p * 4, 0, 1));
+      const cp = clamp(stageF - stage, 0, 1);
+      cells.forEach((c, i) => {
+        c.classList.toggle('is-live', i === stage);
+        c.style.setProperty('--cp', i < stage ? '1' : i === stage ? cp.toFixed(3) : '0');
+      });
     };
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
     addEventListener('resize', update, { passive: true });
+    // tap a board cell to jump to that responsibility
+    cells.forEach((c, i) => c.addEventListener('click', () => {
+      const total = showcase.offsetHeight - innerHeight;
+      scrollTo({ top: Math.round(showcase.offsetTop + total * ((i + 0.5) / STAGES)), behavior: 'smooth' });
+    }));
     update();
   }
 
@@ -200,6 +219,13 @@
   }
   $('#from').addEventListener('change', () => { syncCodes(); updateEstimate(); });
   $('#to').addEventListener('change', () => { syncCodes(); updateEstimate(); });
+
+  const curSel = $('#currency');
+  if (curSel) {
+    CURRENCIES.forEach(([code]) => { const o = document.createElement('option'); o.value = code; o.textContent = code; curSel.appendChild(o); });
+    curSel.value = currency;
+    curSel.addEventListener('change', () => { currency = curSel.value; updateEstimate(); });
+  }
 
   const swapBtn = $('#swapBtn');
   if (swapBtn) swapBtn.addEventListener('click', () => {
@@ -333,7 +359,7 @@
     const from = state.fromCode ? label(state.fromCode) : $('#from').value.trim();
     const to = state.toCode ? label(state.toCode) : $('#to').value.trim();
     const e = computeEstimate();
-    const est = e ? `${money(e.lo)} – ${money(e.hi)} (indicative)` : 'On request';
+    const est = e ? `${money(e.lo)} – ${money(e.hi)} (${currency}, indicative)` : 'On request';
     return {
       Aircraft: JET.name,
       Route: `${from}  →  ${to}  →  Hong Kong (HKG)`,
