@@ -100,9 +100,10 @@ section[id]{scroll-margin-top:88px}
 .nav-links a:hover::after,.nav-links a[aria-current]::after{width:100%}
 .nav-right{display:flex;align-items:center;gap:1.1rem}
 .lang{display:flex;gap:.35rem;align-items:center;font-size:.82rem;color:var(--ink-soft)}
-.lang a{padding:.15rem .3rem;border-radius:5px}
-.lang a[aria-current]{color:var(--ink);font-weight:600}
+.lang a,.lang span[aria-current],.lang .soon{padding:.15rem .3rem;border-radius:5px}
+.lang :is(a,span)[aria-current]{color:var(--ink);font-weight:600}
 .lang a:hover{color:var(--gold)}
+.lang .soon{opacity:.55;cursor:default}
 .lang .sep{opacity:.35}
 .nav-toggle{display:none;background:none;border:0;cursor:pointer;width:44px;height:44px;position:relative}
 .nav-toggle span{position:absolute;left:9px;right:9px;height:2px;background:var(--ink);transition:.3s var(--ease)}
@@ -385,6 +386,29 @@ input::-webkit-date-and-time-value{text-align:left}
   .mobile-nav .m-cta{margin-top:1.4rem}
 }
 
+/* ---------- UX pass: skip link, swap, no-JS note, mobile advisor button ---------- */
+.skip-link{position:fixed;left:14px;top:-60px;z-index:120;background:var(--navy);color:var(--paper);
+  font:600 .9rem/1 var(--sans);padding:.8rem 1.2rem;border-radius:10px;box-shadow:var(--shadow);transition:top .25s var(--ease)}
+.skip-link:focus{top:14px}
+
+.swap-btn{margin-left:auto;border:1px solid var(--line);background:var(--white);border-radius:var(--pill);
+  padding:.5rem .85rem;font:600 .78rem/1 var(--sans);color:var(--ink);cursor:pointer;white-space:nowrap;
+  transition:border-color .25s,color .25s,transform .2s var(--ease)}
+.swap-btn:hover{border-color:var(--gold);color:var(--gold)}
+.swap-btn:active{transform:scale(.95)}
+
+.noscript-note{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:1rem 1.2rem;font-size:.95rem;color:var(--ink);margin:0 0 1.2rem}
+.noscript-note a{color:var(--gold);font-weight:600}
+
+.advisor-fab{display:none}
+@media (max-width:760px){
+  .advisor-fab{position:fixed;right:16px;bottom:16px;z-index:80;display:inline-flex;align-items:center;gap:.5em;
+    background:var(--gold);color:#fff;font:600 .88rem/1 var(--sans);padding:.9rem 1.2rem;border-radius:var(--pill);
+    box-shadow:0 14px 34px -12px rgba(9,20,36,.65);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+  body.fab-hidden .advisor-fab,body.nav-open .advisor-fab{opacity:0;pointer-events:none;transform:translateY(10px)}
+}
+
 /* ---------- Polish: cinematic hero, connectors, grain, micro-interactions ---------- */
 
 /* film grain over the whole page */
@@ -456,8 +480,8 @@ body.loaded .hl:nth-of-type(2) .hl-in{transition-delay:.36s}
 .site-header{transition:background .35s,border-color .3s,box-shadow .3s}
 .site-header:not(.scrolled){background:transparent;backdrop-filter:none}
 .site-header:not(.scrolled) .nav-links a{color:var(--paper)}
-.site-header:not(.scrolled) .lang a{color:rgba(247,243,234,.62)}
-.site-header:not(.scrolled) .lang a[aria-current]{color:var(--paper)}
+.site-header:not(.scrolled) .lang :is(a,span){color:rgba(247,243,234,.62)}
+.site-header:not(.scrolled) .lang :is(a,span)[aria-current]{color:var(--paper)}
 .site-header:not(.scrolled) .brand img{filter:brightness(0) invert(1)}
 .site-header:not(.scrolled) .nav-toggle span{background:var(--paper)}
 body.nav-open .site-header{background:rgba(247,243,234,.96);backdrop-filter:blur(14px)}

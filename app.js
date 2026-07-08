@@ -107,6 +107,30 @@
   $$('.reveal:not(.in)').forEach(el => io ? io.observe(el) : el.classList.add('in'));
   requestAnimationFrame(() => document.body.classList.add('loaded'));
 
+  /* scrollspy: highlight the nav link for the section in view */
+  const spyLinks = $$('.nav-links a');
+  if (spyLinks.length && 'IntersectionObserver' in window) {
+    const spy = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      spyLinks.forEach(a => {
+        if (a.getAttribute('href') === '#' + e.target.id) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }), { rootMargin: '-40% 0px -55% 0px' });
+    ['services', 'charter', 'safety', 'about', 'contact'].forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+  }
+
+  /* mobile "Call an advisor" button hides over the planner and contact sections */
+  const fabTargets = ['#organizer', '#contact'].map(s => $(s)).filter(Boolean);
+  if (fabTargets.length && 'IntersectionObserver' in window) {
+    const inView = new Set();
+    const fio = new IntersectionObserver(es => {
+      es.forEach(e => e.isIntersecting ? inView.add(e.target) : inView.delete(e.target));
+      document.body.classList.toggle('fab-hidden', inView.size > 0);
+    }, { threshold: 0.08 });
+    fabTargets.forEach(t => fio.observe(t));
+  }
+
   /* ---------- Service swipe decks: swipe (native), tap cover, or dots ---------- */
   $$('.svc').forEach(card => {
     const deck = $('.svc-deck', card);
@@ -177,6 +201,19 @@
   $('#from').addEventListener('change', () => { syncCodes(); updateEstimate(); });
   $('#to').addEventListener('change', () => { syncCodes(); updateEstimate(); });
 
+  const swapBtn = $('#swapBtn');
+  if (swapBtn) swapBtn.addEventListener('click', () => {
+    const f = $('#from'), t = $('#to'), v = f.value;
+    f.value = t.value; t.value = v;
+    syncCodes(); updateEstimate();
+  });
+
+  // keep the return picker from offering days before departure
+  dateEl.addEventListener('change', () => {
+    retEl.min = dateEl.value || iso;
+    if (retEl.value && retEl.value < retEl.min) { retEl.value = ''; updateEstimate(); }
+  });
+
   const availNote = $('#availNote');
   function updateAvailability() {
     if (availNote) {
@@ -190,15 +227,21 @@
   $('#date').addEventListener('change', updateAvailability);
   retEl.addEventListener('change', updateAvailability);
 
-  // Priced there-and-back to Hong Kong; needs a known destination, any origin allowed.
+  // Priced so the aircraft always ends in Hong Kong: trips TO Hong Kong are one leg home;
+  // anything else is the outbound leg plus the flight back to base.
   function computeEstimate() {
-    const to = state.toCode;
-    if (!to || to === HOME) return null;
-    const back = hoursFor(to, HOME);              // destination -> Hong Kong
+    const from = state.fromCode, to = state.toCode;
+    if (!from || !to || from === to) return null;
+    if (to === HOME) {
+      const h = hoursFor(from, HOME);
+      if (h == null) return null;
+      return { lo: round5(JET.low * h), hi: round5(JET.high * h), h, inbound: true };
+    }
+    const back = hoursFor(to, HOME);
     if (back == null) return null;
-    const outLeg = hoursFor(state.fromCode, to);  // From -> destination, if priceable
+    const outLeg = hoursFor(from, to);
     const total = Math.round(((outLeg != null ? outLeg : back) + back) * 10) / 10;
-    return { lo: round5(JET.low * total), hi: round5(JET.high * total), h: total };
+    return { lo: round5(JET.low * total), hi: round5(JET.high * total), h: total, inbound: false };
   }
 
   function updateEstimate() {
@@ -213,7 +256,9 @@
     const e = computeEstimate();
     if (e) {
       estVal.textContent = `${money(e.lo)} – ${money(e.hi)}`;
-      estFine.textContent = `≈ ${e.h} h flying · incl. return to Hong Kong · illustrative`;
+      estFine.textContent = e.inbound
+        ? `≈ ${e.h} h flying · arriving Hong Kong · illustrative`
+        : `≈ ${e.h} h flying · incl. return to Hong Kong · illustrative`;
     } else {
       estVal.textContent = 'On request';
       estFine.textContent = 'Your advisor will confirm this route';
