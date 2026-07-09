@@ -6,6 +6,9 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
+  // i18n bridge — dictionary + language state live in i18n.js (loaded first)
+  const t = k => (window.EJI18N ? window.EJI18N.t(k) : k);
+  const langIdx = () => (window.EJI18N ? window.EJI18N.lang() : 0);
 
   /* ---------- Reference data ---------- */
   // The aircraft is Hong Kong based; every charter is priced there-and-back to Hong Kong.
@@ -22,40 +25,45 @@
   // A charter holds the aircraft for its whole span; blocked if that span hits any committed range.
   const spanBlocked = (a, b) => { if (!a) return false; const end = (b && b >= a) ? b : a; return BLOCKED.some(r => a <= r.to && end >= r.from); };
 
-  // [code, city, one-way flying hours from Hong Kong]. Any airport can be typed; known
-  // destinations quote instantly, anything else falls back to "on request".
+  // [code, city (EN), one-way flying hours from Hong Kong, 繁體, 简体 (omitted when same as 繁)].
+  // Any airport can be typed in any language; known destinations quote instantly,
+  // anything else falls back to "on request".
   const DEST = [
-    ['HKG','Hong Kong',0],
-    ['MFM','Macau',0.4],['ZUH','Zhuhai',0.5],['SZX','Shenzhen',0.5],['CAN','Guangzhou',0.6],
-    ['NNG','Nanning',1.2],['HAK','Haikou',1.3],['FOC','Fuzhou',1.4],['XMN','Xiamen',1.4],
-    ['SYX','Sanya',1.5],['KWL','Guilin',1.5],['KHH','Kaohsiung',1.5],['CSX','Changsha',1.6],
-    ['RMQ','Taichung',1.6],['TPE','Taipei',1.7],['TSA','Taipei Songshan',1.7],['HAN','Hanoi',2.0],
-    ['WUH','Wuhan',2.0],['MNL','Manila',2.2],['DAD','Da Nang',2.2],['HGH','Hangzhou',2.2],
-    ['KMG','Kunming',2.2],['NKG','Nanjing',2.2],['PVG','Shanghai',2.4],['CKG','Chongqing',2.4],
-    ['SGN','Ho Chi Minh City',2.5],['OKA','Okinawa',2.5],['REP','Siem Reap',2.6],['CTU','Chengdu',2.6],
-    ['VTE','Vientiane',2.6],['LPQ','Luang Prabang',2.6],['PNH','Phnom Penh',2.7],['TNA','Jinan',2.7],
-    ['BKK','Bangkok',2.8],['DMK','Bangkok Don Mueang',2.8],['RGN','Yangon',2.8],['TAO','Qingdao',2.8],
-    ['BKI','Kota Kinabalu',2.8],['BWN','Bandar Seri Begawan',2.8],['CEB','Cebu',3.0],['CNX','Chiang Mai',3.0],
-    ['USM','Koh Samui',3.0],['DLC','Dalian',3.0],['XIY',"Xi'an",3.0],['PEK','Beijing',3.2],
-    ['PKX','Beijing Daxing',3.2],['PUS','Busan',3.2],['CJU','Jeju',3.3],['KBV','Krabi',3.3],
-    ['SHE','Shenyang',3.3],['ICN','Seoul Incheon',3.4],['GMP','Seoul Gimpo',3.4],['FUK','Fukuoka',3.4],
-    ['HKT','Phuket',3.5],['PEN','Penang',3.5],['LGK','Langkawi',3.7],['HRB','Harbin',3.8],
-    ['KIX','Osaka',3.8],['KUL','Kuala Lumpur',4.0],['SIN','Singapore',4.0],['DAC','Dhaka',4.0],
-    ['NGO','Nagoya',4.0],['NRT','Tokyo Narita',4.4],['HND','Tokyo Haneda',4.4],['GUM','Guam',4.5],
-    ['CGK','Jakarta',4.5],['KTM','Kathmandu',4.5],['SUB','Surabaya',4.7],['URC','Urumqi',4.8],
-    ['CTS','Sapporo',5.0],['DPS','Bali (Denpasar)',5.2],['BLR','Bengaluru',5.5],['HYD','Hyderabad',5.5],
-    ['CMB','Colombo',5.5],['DEL','Delhi',6.0],['BOM','Mumbai',6.0],['MLE','Maldives',6.2],
-    ['PER','Perth',7.5],['DXB','Dubai',8.0],['AUH','Abu Dhabi',8.2],['DOH','Doha',8.3],
-    ['BNE','Brisbane',8.8],['RUH','Riyadh',9.0],['SYD','Sydney',9.2],['MEL','Melbourne',9.5],
-    ['HNL','Honolulu',10.5],['NAN','Nadi',10.5],['IST','Istanbul',11.0],['AKL','Auckland',11.5],
-    ['MUC','Munich',12.3],['FRA','Frankfurt',12.5],['YVR','Vancouver',12.5],['SEA','Seattle',12.5],
-    ['LHR','London',12.8],['AMS','Amsterdam',12.8],['CDG','Paris',13.0],['ZRH','Zurich',13.0],
-    ['FCO','Rome',13.0],['MXP','Milan',13.0],['LAX','Los Angeles',13.0],['SFO','San Francisco',13.0],
-    ['GVA','Geneva',13.2],['BCN','Barcelona',13.8],['MAD','Madrid',14.0],['ORD','Chicago',15.0],
-    ['JFK','New York',15.5],
+    ['HKG','Hong Kong',0,'香港'],
+    ['MFM','Macau',0.4,'澳門','澳门'],['ZUH','Zhuhai',0.5,'珠海'],['SZX','Shenzhen',0.5,'深圳'],['CAN','Guangzhou',0.6,'廣州','广州'],
+    ['NNG','Nanning',1.2,'南寧','南宁'],['HAK','Haikou',1.3,'海口'],['FOC','Fuzhou',1.4,'福州'],['XMN','Xiamen',1.4,'廈門','厦门'],
+    ['SYX','Sanya',1.5,'三亞','三亚'],['KWL','Guilin',1.5,'桂林'],['KHH','Kaohsiung',1.5,'高雄'],['CSX','Changsha',1.6,'長沙','长沙'],
+    ['RMQ','Taichung',1.6,'台中'],['TPE','Taipei',1.7,'台北'],['TSA','Taipei Songshan',1.7,'台北松山'],['HAN','Hanoi',2.0,'河內','河内'],
+    ['WUH','Wuhan',2.0,'武漢','武汉'],['MNL','Manila',2.2,'馬尼拉','马尼拉'],['DAD','Da Nang',2.2,'峴港','岘港'],['HGH','Hangzhou',2.2,'杭州'],
+    ['KMG','Kunming',2.2,'昆明'],['NKG','Nanjing',2.2,'南京'],['PVG','Shanghai',2.4,'上海'],['CKG','Chongqing',2.4,'重慶','重庆'],
+    ['SGN','Ho Chi Minh City',2.5,'胡志明市'],['OKA','Okinawa',2.5,'沖繩','冲绳'],['REP','Siem Reap',2.6,'暹粒'],['CTU','Chengdu',2.6,'成都'],
+    ['VTE','Vientiane',2.6,'永珍','万象'],['LPQ','Luang Prabang',2.6,'龍坡邦','琅勃拉邦'],['PNH','Phnom Penh',2.7,'金邊','金边'],['TNA','Jinan',2.7,'濟南','济南'],
+    ['BKK','Bangkok',2.8,'曼谷'],['DMK','Bangkok Don Mueang',2.8,'曼谷廊曼'],['RGN','Yangon',2.8,'仰光'],['TAO','Qingdao',2.8,'青島','青岛'],
+    ['BKI','Kota Kinabalu',2.8,'亞庇','哥打基纳巴卢'],['BWN','Bandar Seri Begawan',2.8,'斯里巴加灣市','斯里巴加湾市'],['CEB','Cebu',3.0,'宿霧','宿务'],['CNX','Chiang Mai',3.0,'清邁','清迈'],
+    ['USM','Koh Samui',3.0,'蘇梅島','苏梅岛'],['DLC','Dalian',3.0,'大連','大连'],['XIY',"Xi'an",3.0,'西安'],['PEK','Beijing',3.2,'北京'],
+    ['PKX','Beijing Daxing',3.2,'北京大興','北京大兴'],['PUS','Busan',3.2,'釜山'],['CJU','Jeju',3.3,'濟州','济州'],['KBV','Krabi',3.3,'甲米'],
+    ['SHE','Shenyang',3.3,'瀋陽','沈阳'],['ICN','Seoul Incheon',3.4,'首爾仁川','首尔仁川'],['GMP','Seoul Gimpo',3.4,'首爾金浦','首尔金浦'],['FUK','Fukuoka',3.4,'福岡','福冈'],
+    ['HKT','Phuket',3.5,'布吉','普吉'],['PEN','Penang',3.5,'檳城','槟城'],['LGK','Langkawi',3.7,'蘭卡威','兰卡威'],['HRB','Harbin',3.8,'哈爾濱','哈尔滨'],
+    ['KIX','Osaka',3.8,'大阪'],['KUL','Kuala Lumpur',4.0,'吉隆坡'],['SIN','Singapore',4.0,'新加坡'],['DAC','Dhaka',4.0,'達卡','达卡'],
+    ['NGO','Nagoya',4.0,'名古屋'],['NRT','Tokyo Narita',4.4,'東京成田','东京成田'],['HND','Tokyo Haneda',4.4,'東京羽田','东京羽田'],['GUM','Guam',4.5,'關島','关岛'],
+    ['CGK','Jakarta',4.5,'雅加達','雅加达'],['KTM','Kathmandu',4.5,'加德滿都','加德满都'],['SUB','Surabaya',4.7,'泗水'],['URC','Urumqi',4.8,'烏魯木齊','乌鲁木齐'],
+    ['CTS','Sapporo',5.0,'札幌'],['DPS','Bali (Denpasar)',5.2,'峇里（登巴薩）','巴厘岛（登巴萨）'],['BLR','Bengaluru',5.5,'班加羅爾','班加罗尔'],['HYD','Hyderabad',5.5,'海德拉巴'],
+    ['CMB','Colombo',5.5,'科倫坡','科伦坡'],['DEL','Delhi',6.0,'德里'],['BOM','Mumbai',6.0,'孟買','孟买'],['MLE','Maldives',6.2,'馬爾代夫','马尔代夫'],
+    ['PER','Perth',7.5,'珀斯'],['DXB','Dubai',8.0,'迪拜'],['AUH','Abu Dhabi',8.2,'阿布扎比'],['DOH','Doha',8.3,'多哈'],
+    ['BNE','Brisbane',8.8,'布里斯本','布里斯班'],['RUH','Riyadh',9.0,'利雅得'],['SYD','Sydney',9.2,'悉尼'],['MEL','Melbourne',9.5,'墨爾本','墨尔本'],
+    ['HNL','Honolulu',10.5,'檀香山'],['NAN','Nadi',10.5,'楠迪'],['IST','Istanbul',11.0,'伊斯坦布爾','伊斯坦布尔'],['AKL','Auckland',11.5,'奧克蘭','奥克兰'],
+    ['MUC','Munich',12.3,'慕尼黑'],['FRA','Frankfurt',12.5,'法蘭克福','法兰克福'],['YVR','Vancouver',12.5,'溫哥華','温哥华'],['SEA','Seattle',12.5,'西雅圖','西雅图'],
+    ['LHR','London',12.8,'倫敦','伦敦'],['AMS','Amsterdam',12.8,'阿姆斯特丹'],['CDG','Paris',13.0,'巴黎'],['ZRH','Zurich',13.0,'蘇黎世','苏黎世'],
+    ['FCO','Rome',13.0,'羅馬','罗马'],['MXP','Milan',13.0,'米蘭','米兰'],['LAX','Los Angeles',13.0,'洛杉磯','洛杉矶'],['SFO','San Francisco',13.0,'三藩市','旧金山'],
+    ['GVA','Geneva',13.2,'日內瓦','日内瓦'],['BCN','Barcelona',13.8,'巴塞隆拿','巴塞罗那'],['MAD','Madrid',14.0,'馬德里','马德里'],['ORD','Chicago',15.0,'芝加哥'],
+    ['JFK','New York',15.5,'紐約','纽约'],
   ];
-  const AIRPORTS = DEST.map(([c, n]) => [c, n]);
-  const CITY = Object.fromEntries(AIRPORTS);
+  const BY_CODE = Object.fromEntries(DEST.map(d => [d[0], d]));
+  const cityName = code => {
+    const d = BY_CODE[code]; if (!d) return code;
+    const L = langIdx();
+    return L === 1 ? (d[3] || d[1]) : L === 2 ? (d[4] || d[3] || d[1]) : d[1];
+  };
   const HOURS = Object.fromEntries(DEST.filter(([c]) => c !== 'HKG').map(([c, n, h]) => ['HKG-' + c, h]));
   const hoursFor = (a, b) => (!a || !b) ? null : (HOURS[a + '-' + b] ?? HOURS[b + '-' + a] ?? null);
 
@@ -70,20 +78,28 @@
   const niceRound = n => { const s = n >= 1e7 ? 5e5 : n >= 1e6 ? 5e4 : n >= 1e5 ? 5e3 : n >= 1e4 ? 1e3 : 500; return Math.round(n / s) * s; };
   const money = hkd => { const c = CUR[currency]; return c.sym + niceRound(hkd * c.rate).toLocaleString('en-US'); };
   const round5 = n => Math.round(n / 5000) * 5000;
-  const label = code => code && CITY[code] ? `${code} — ${CITY[code]}` : '';
+  const label = code => code && BY_CODE[code] ? `${code} — ${cityName(code)}` : '';
 
+  // Matches an IATA code, or a city name typed in English, Traditional or Simplified.
   const resolveCode = v => {
     if (!v) return null;
     const s = v.trim();
     const m = s.match(/^([A-Za-z]{3})\b/);
-    if (m && CITY[m[1].toUpperCase()]) return m[1].toUpperCase();
-    const hit = AIRPORTS.find(([c, n]) => n.toLowerCase().includes(s.toLowerCase()) || c.toLowerCase() === s.toLowerCase());
+    if (m && BY_CODE[m[1].toUpperCase()]) return m[1].toUpperCase();
+    const q = s.toLowerCase();
+    const hit = DEST.find(d => d[0].toLowerCase() === q ||
+      [d[1], d[3], d[4]].filter(Boolean).some(n => n.toLowerCase().includes(q)));
     return hit ? hit[0] : null;
   };
 
   /* ---------- Static render: datalist, pax ---------- */
   const airportsDL = $('#airports');
-  if (airportsDL) AIRPORTS.forEach(([c, n]) => { const o = document.createElement('option'); o.value = `${c} — ${n}`; airportsDL.appendChild(o); });
+  function fillAirports() {
+    if (!airportsDL) return;
+    airportsDL.textContent = '';
+    DEST.forEach(([c]) => { const o = document.createElement('option'); o.value = label(c); airportsDL.appendChild(o); });
+  }
+  fillAirports();
 
   const paxSel = $('#pax');
   if (paxSel) for (let i = 1; i <= 13; i++) { const o = document.createElement('option'); o.value = String(i); o.textContent = String(i); if (i === 4) o.selected = true; paxSel.appendChild(o); }
@@ -106,7 +122,7 @@
   if (toggle) toggle.addEventListener('click', () => {
     const open = document.body.classList.toggle('nav-open');
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    toggle.setAttribute('aria-label', open ? t('nav.close') : t('nav.open'));
   });
   $$('#mobileNav a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('nav-open')));
 
@@ -192,17 +208,14 @@
   if (!form) return;
 
   const state = { fromCode: 'HKG', toCode: null };
-  let step = 1;
 
   const stepEls = $$('.step', form);
-  const stepperEls = $$('#stepper li');
-  const bar = $('#progressBar');
-  const backBtn = $('#backBtn'), nextBtn = $('#nextBtn'), orgNav = $('#orgNav');
+  const nextBtn = $('#nextBtn'), orgNav = $('#orgNav');
   const estWrap = $('#estWrap'), estVal = $('#estVal'), estFine = estWrap && estWrap.querySelector('.est-fine');
   const summaryPane = $('#summaryPane');
 
   // Pre-fill Hong Kong as the default From — editable to any airport.
-  $('#from').value = 'HKG — Hong Kong';
+  $('#from').value = label('HKG');
   state.fromCode = 'HKG';
 
   function syncCodes() {
@@ -237,8 +250,8 @@
     if (availNote) {
       const d = $('#date').value;
       if (!d) { availNote.textContent = ''; availNote.className = 'avail'; }
-      else if (spanBlocked(d, retEl.value)) { availNote.textContent = '✕  The aircraft is committed on these dates — please choose different dates'; availNote.className = 'avail is-blocked'; }
-      else { availNote.textContent = '✓  The aircraft is available on your dates'; availNote.className = 'avail is-ok'; }
+      else if (spanBlocked(d, retEl.value)) { availNote.textContent = t('avail.blocked'); availNote.className = 'avail is-blocked'; }
+      else { availNote.textContent = t('avail.ok'); availNote.className = 'avail is-ok'; }
     }
     updateEstimate();
   }
@@ -264,17 +277,17 @@
     if (!$('#from').value.trim() || !$('#to').value.trim()) { estWrap.hidden = true; return; }
     estWrap.hidden = false;
     if (spanBlocked($('#date').value, retEl.value)) {
-      estVal.textContent = 'Unavailable';
-      estFine.textContent = 'The aircraft is committed on these dates';
+      estVal.textContent = t('est.unavail');
+      estFine.textContent = t('est.committed');
       return;
     }
     const e = computeEstimate();
     if (e) {
       estVal.textContent = `${money(e.lo)} – ${money(e.hi)}`;
-      estFine.textContent = `≈ ${e.h} h flying · return trip from Hong Kong · illustrative`;
+      estFine.textContent = t('est.fine').replace('{h}', e.h);
     } else {
-      estVal.textContent = 'On request';
-      estFine.textContent = 'Your advisor will confirm this route';
+      estVal.textContent = t('est.onrequest');
+      estFine.textContent = t('est.confirm');
     }
   }
 
@@ -284,29 +297,19 @@
     const e = $(`.err[data-for="${id}"]`); if (e) e.textContent = msg || '';
     return !msg;
   };
-  const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-
-  function validate(n) {
+  // Trip is the only thing collected — no name/email/phone on the site by design.
+  function validate() {
     let ok = true, firstBad = null;
     const fail = (id, msg) => { setErr(id, msg); ok = false; firstBad = firstBad || $('#' + id); };
-    if (n === 1) {
-      setErr('from', ''); setErr('to', ''); setErr('date', '');
-      syncCodes();
-      if (!$('#from').value.trim()) fail('from', 'Where are you departing from?');
-      if (!$('#to').value.trim()) fail('to', 'Where would you like to go?');
-      const d = $('#date').value;
-      if (!d) fail('date', 'Pick a departure date');
-      else if (d < iso) fail('date', 'Choose a future date');
-      else if (retEl.value && retEl.value < d) fail('date', 'The return date is before departure');
-      else if (spanBlocked(d, retEl.value)) fail('date', 'The aircraft is committed on these dates — please choose different dates.');
-    }
-    if (n === 2) {
-      ['name','email','phone'].forEach(id => setErr(id, '')); setErr('consent', '');
-      if (!$('#name').value.trim()) fail('name', 'Your name, please');
-      if (!emailOk($('#email').value.trim())) fail('email', 'A valid email so we can reply');
-      if ($('#phone').value.replace(/\D/g, '').length < 6) fail('phone', 'A contact number, please');
-      if (!$('#consent').checked) { setErr('consent', 'Please tick to let us reply'); ok = false; firstBad = firstBad || $('#consent'); }
-    }
+    setErr('from', ''); setErr('to', ''); setErr('date', '');
+    syncCodes();
+    if (!$('#from').value.trim()) fail('from', t('err.from'));
+    if (!$('#to').value.trim()) fail('to', t('err.to'));
+    const d = $('#date').value;
+    if (!d) fail('date', t('err.date'));
+    else if (d < iso) fail('date', t('err.dateFuture'));
+    else if (retEl.value && retEl.value < d) fail('date', t('err.retBefore'));
+    else if (spanBlocked(d, retEl.value)) fail('date', t('err.dateBlocked'));
     if (firstBad) firstBad.focus();
     return ok;
   }
@@ -324,26 +327,12 @@
     clearTimeout(toastT); toastT = setTimeout(() => { t.style.opacity = '0'; }, 2600);
   }
 
-  /* ---------- step navigation ---------- */
   function render() {
-    stepEls.forEach(s => s.classList.toggle('is-active', Number(s.dataset.step) === step));
-    stepperEls.forEach(li => {
-      const i = Number(li.dataset.ind);
-      li.classList.toggle('is-active', i === step);
-      li.classList.toggle('is-done', i < step);
-    });
-    bar.style.width = (step === 1 ? 50 : 100) + '%';
-    backBtn.hidden = step === 1;
-    nextBtn.textContent = step === 2 ? 'Prepare request' : 'Continue';
+    nextBtn.textContent = t('org.prepare');
     updateEstimate();
   }
 
-  nextBtn.addEventListener('click', () => {
-    if (!validate(step)) return;
-    if (step < 2) { step++; render(); $('#organizer').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    else finalize();
-  });
-  backBtn.addEventListener('click', () => { if (step > 1) { step--; render(); } });
+  nextBtn.addEventListener('click', () => { if (validate()) finalize(); });
   form.addEventListener('submit', e => e.preventDefault());
 
   /* ---------- finalize ---------- */
@@ -351,24 +340,24 @@
     const from = state.fromCode ? label(state.fromCode) : $('#from').value.trim();
     const to = state.toCode ? label(state.toCode) : $('#to').value.trim();
     const e = computeEstimate();
-    const est = e ? `${money(e.lo)} – ${money(e.hi)} (${currency}, indicative)` : 'On request';
+    const est = e ? `${money(e.lo)} – ${money(e.hi)} (${currency}, ${t('req.indicative')})` : t('est.onrequest');
     return {
-      Aircraft: JET.name,
-      Route: `${from}  →  ${to}  →  Hong Kong (HKG)`,
-      Departure: `${$('#date').value}${$('#time').value ? ' · ' + $('#time').value : ''}${retEl.value ? '  ·  returning ' + retEl.value : ''}`,
-      Passengers: $('#pax').value,
-      'Indicative estimate': est,
-      Contact: `${$('#name').value.trim()} · ${$('#email').value.trim()} · ${$('#phone').value.trim()} (prefers ${$('#pref').value})`,
-      Notes: $('#notes').value.trim() || '—',
+      [t('req.aircraft')]: JET.name,
+      [t('req.route')]: `${from}  →  ${to}  →  ${cityName('HKG')} (HKG)`,
+      [t('req.departure')]: `${$('#date').value}${$('#time').value ? ' · ' + $('#time').value : ''}${retEl.value ? '  ·  ' + t('req.returning') + ' ' + retEl.value : ''}`,
+      [t('req.passengers')]: $('#pax').value,
+      [t('req.estimate')]: est,
+      [t('req.notes')]: $('#notes').value.trim() || '—',
     };
   }
 
-  function finalize() {
-    if ($('#hp_company').value) return; // honeypot: silently ignore bots
-    const ref = 'EJ-' + (Date.now().toString(36).slice(-4) + Math.floor(Math.random() * 46656).toString(36)).toUpperCase().slice(0, 6);
+  // The prepared request is the ONLY output; it never leaves the browser until the
+  // user sends it from their own email. Reference is stamped once, then reused so a
+  // language switch can re-render the same request in the new language.
+  let currentRef = null;
+  function renderSummary() {
     const data = buildRequest();
-
-    $('#refNo').textContent = ref;
+    $('#refNo').textContent = currentRef;
     const grid = $('#summaryGrid'); grid.textContent = '';
     Object.entries(data).forEach(([k, v]) => {
       const row = document.createElement('div'); row.className = 'row';
@@ -376,30 +365,45 @@
       const dd = document.createElement('dd'); dd.textContent = v;
       row.append(dt, dd); grid.appendChild(row);
     });
-
     // safe mailto (opens the user's own client; nothing auto-sent)
-    const body = `Charter request ${ref}\n\n` + Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n') +
-      `\n\n— Prepared via everjet.net`;
-    $('#mailBtn').href = `mailto:cs@everjet.net?subject=${encodeURIComponent('Charter request ' + ref)}&body=${encodeURIComponent(body)}`;
-    $('#copyBtn').onclick = () => { navigator.clipboard?.writeText(body).then(() => alertToast('Request copied')); };
+    const subject = `${t('req.subject')} ${currentRef}`;
+    const body = `${subject}\n\n` + Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n') +
+      `\n\n${t('req.via')}`;
+    $('#mailBtn').href = `mailto:cs@everjet.net?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    $('#copyBtn').onclick = () => { navigator.clipboard?.writeText(body).then(() => alertToast(t('toast.copied'))); };
+  }
 
+  function finalize() {
+    if ($('#hp_company').value) return; // honeypot: silently ignore bots
+    currentRef = 'EJ-' + (Date.now().toString(36).slice(-4) + Math.floor(Math.random() * 46656).toString(36)).toUpperCase().slice(0, 6);
+    renderSummary();
     stepEls.forEach(s => s.classList.remove('is-active'));
     orgNav.hidden = true;
-    stepperEls.forEach(li => li.classList.add('is-done'));
-    bar.style.width = '100%';
     summaryPane.hidden = false;
     summaryPane.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   $('#newBtn').addEventListener('click', () => {
     form.reset();
-    state.fromCode = 'HKG'; state.toCode = null; step = 1;
-    $('#from').value = 'HKG — Hong Kong';
+    state.fromCode = 'HKG'; state.toCode = null;
+    $('#from').value = label('HKG');
+    stepEls.forEach(s => s.classList.add('is-active'));
     if (availNote) { availNote.textContent = ''; availNote.className = 'avail'; }
     summaryPane.hidden = true; orgNav.hidden = false;
     if (paxSel) paxSel.value = '4';
     render();
     $('#organizer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Language switch: refresh everything the planner renders dynamically.
+  if (window.EJI18N) window.EJI18N.onChange(() => {
+    fillAirports();
+    // re-label recognised airports into the new language; free-typed text is left alone
+    [$('#from'), $('#to')].forEach(inp => { const c = resolveCode(inp.value); if (c) inp.value = label(c); });
+    syncCodes();
+    updateAvailability(); // also refreshes the estimate
+    render();             // refreshes the Prepare request button
+    if (!summaryPane.hidden) renderSummary(); // relocalise an already-prepared request
   });
 
   render();

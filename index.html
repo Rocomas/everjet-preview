@@ -28,40 +28,45 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a class="skip-link" href="#top">Skip to content</a>
+<a class="skip-link" href="#top" data-i18n="skip">Skip to content</a>
 <div class="scroll-prog" id="scrollProg" aria-hidden="true"></div>
 
 <header class="site-header" id="header">
   <div class="container nav">
-    <a class="brand" href="#top" aria-label="Ever Jet Aviation — home">
+    <a class="brand" href="#top" data-i18n-aria="brand.aria" aria-label="Ever Jet Aviation — home">
       <img src="img/logo.png" alt="Ever Jet Aviation">
     </a>
     <nav aria-label="Primary">
       <ul class="nav-links">
-        <li><a href="#services">Management</a></li>
-        <li><a href="#charter">Charter</a></li>
-        <li><a href="#safety">Safety</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#services" data-i18n="nav.mgmt">Management</a></li>
+        <li><a href="#charter" data-i18n="nav.charter">Charter</a></li>
+        <li><a href="#safety" data-i18n="nav.safety">Safety</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
       </ul>
     </nav>
     <div class="nav-right">
-      <span class="lang" aria-label="Language">
-        <span aria-current="true">EN</span><span class="sep">·</span><span class="soon" title="繁體中文 — coming soon">繁</span><span class="sep">·</span><span class="soon" title="简体中文 — coming soon">简</span>
+      <span class="lang" role="group" data-i18n-aria="lang.aria" aria-label="Language">
+        <button type="button" data-setlang="0" aria-current="true">EN</button><span class="sep">·</span><button type="button" data-setlang="1" lang="zh-Hant" aria-label="繁體中文">繁</button><span class="sep">·</span><button type="button" data-setlang="2" lang="zh-Hans" aria-label="简体中文">简</button>
       </span>
-      <a class="btn btn-gold" href="#contact">Talk to us</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <a class="btn btn-gold" href="#contact" data-i18n="nav.talk">Talk to us</a>
+      <button class="nav-toggle" id="navToggle" data-i18n-aria="nav.open" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
 
 <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
-  <a href="#services">Management</a>
-  <a href="#charter">Charter</a>
-  <a href="#safety">Safety</a>
-  <a href="#about">About</a>
-  <a href="#contact">Contact</a>
-  <a class="btn btn-gold m-cta" href="#contact">Talk to us</a>
+  <div class="m-lang" role="group" data-i18n-aria="lang.aria" aria-label="Language">
+    <button type="button" data-setlang="0" aria-current="true">English</button>
+    <button type="button" data-setlang="1" lang="zh-Hant">繁體中文</button>
+    <button type="button" data-setlang="2" lang="zh-Hans">简体中文</button>
+  </div>
+  <a href="#services" data-i18n="nav.mgmt">Management</a>
+  <a href="#charter" data-i18n="nav.charter">Charter</a>
+  <a href="#safety" data-i18n="nav.safety">Safety</a>
+  <a href="#about" data-i18n="nav.about">About</a>
+  <a href="#contact" data-i18n="nav.contact">Contact</a>
+  <a class="btn btn-gold m-cta" href="#contact" data-i18n="nav.talk">Talk to us</a>
 </nav>
 
 <main id="top">
@@ -70,69 +75,69 @@
   <section class="hero" aria-label="Introduction">
     <div class="hero-visual" aria-hidden="true"><img src="img/hero-visual.jpg" alt="" width="924" height="750" fetchpriority="high" decoding="async"></div>
     <div class="container hero-inner">
-      <span class="eyebrow eyebrow-light">Aircraft management · Hong Kong</span>
-      <h1><span class="hl"><span class="hl-in">Your private</span></span><span class="hl"><span class="hl-in"><em>flight department.</em></span></span></h1>
-      <p class="lead">Ever Jet manages, operates and safeguards your aircraft, giving you a trouble-free ownership experience and a 24/7 flight department at your fingertips. We also fly private charter on our own Bombardier Global 5000.</p>
+      <span class="eyebrow eyebrow-light" data-i18n="hero.eyebrow">Aircraft management · Hong Kong</span>
+      <h1 data-i18n="hero.h1" data-i18n-html><span class="hl"><span class="hl-in">Your private</span></span><span class="hl"><span class="hl-in"><em>flight department.</em></span></span></h1>
+      <p class="lead" data-i18n="hero.lead">Ever Jet manages, operates and safeguards your aircraft, giving you a trouble-free ownership experience and a 24/7 flight department at your fingertips. We also fly private charter on our own Bombardier Global 5000.</p>
       <div class="hero-cta">
-        <a class="btn btn-gold btn-lg" href="#services">Manage my aircraft</a>
-        <a class="btn btn-ghost on-navy btn-lg" href="#charter">Charter the jet</a>
+        <a class="btn btn-gold btn-lg" href="#services" data-i18n="hero.cta1">Manage my aircraft</a>
+        <a class="btn btn-ghost on-navy btn-lg" href="#charter" data-i18n="hero.cta2">Charter the jet</a>
       </div>
       <div class="hero-trust">
-        <div><b>San Marino AOC</b><span>Commercial &amp; private</span></div>
-        <div><b>IS-BAO</b><span>Certified operator</span></div>
-        <div><b>AsBAA</b><span>Member</span></div>
-        <div><b>Since 2023</b><span>Greater China &amp; SE Asia</span></div>
+        <div><b data-i18n="trust1.b">San Marino AOC</b><span data-i18n="trust1.s">Commercial &amp; private</span></div>
+        <div><b>IS-BAO</b><span data-i18n="trust2.s">Certified operator</span></div>
+        <div><b>AsBAA</b><span data-i18n="trust3.s">Member</span></div>
+        <div><b data-i18n="trust4.b">Since 2023</b><span data-i18n="trust4.s">Greater China &amp; SE Asia</span></div>
       </div>
     </div>
   </section>
 
   <!-- SHOWCASE — pinned scrollytelling -->
   <section class="showcase" id="showcase" aria-label="What we do for your aircraft">
-    <div class="stage-bg" aria-hidden="true"><img src="img/hero-jet.jpg" alt="" width="600" height="516"></div>
+    <div class="stage-bg" aria-hidden="true"><img src="img/fleet-dusk.jpg" alt="" width="1400" height="946"></div>
     <div class="fid-flow">
       <div class="stage-hud">
-        <span class="eyebrow">One team · four responsibilities</span>
-        <div class="fid-board" id="fidBoard" aria-label="Our responsibilities — tap to explore">
-          <button class="fid-cell" type="button" data-go="0"><span class="fid-num">01</span><span class="fid-lbl">Manage</span></button>
-          <button class="fid-cell" type="button" data-go="1"><span class="fid-num">02</span><span class="fid-lbl">Operate</span></button>
-          <button class="fid-cell" type="button" data-go="2"><span class="fid-num">03</span><span class="fid-lbl">Maintain</span></button>
-          <button class="fid-cell" type="button" data-go="3"><span class="fid-num">04</span><span class="fid-lbl">Charter</span></button>
+        <span class="eyebrow" data-i18n="show.eyebrow">One team · four responsibilities</span>
+        <div class="fid-board" id="fidBoard" data-i18n-aria="show.board" aria-label="Our responsibilities — tap to explore">
+          <button class="fid-cell" type="button" data-go="0"><span class="fid-num">01</span><span class="fid-lbl" data-i18n="show.c1">Manage</span></button>
+          <button class="fid-cell" type="button" data-go="1"><span class="fid-num">02</span><span class="fid-lbl" data-i18n="show.c2">Operate</span></button>
+          <button class="fid-cell" type="button" data-go="2"><span class="fid-num">03</span><span class="fid-lbl" data-i18n="show.c3">Maintain</span></button>
+          <button class="fid-cell" type="button" data-go="3"><span class="fid-num">04</span><span class="fid-lbl" data-i18n="show.c4">Charter</span></button>
         </div>
       </div>
       <article class="resp" data-p="0">
         <span class="resp-n">01</span>
         <div class="resp-body">
-          <span class="resp-kicker">Aircraft Management</span>
-          <h3 class="resp-word">Manage</h3>
-          <p class="resp-desc">A customised flight department built around your aircraft — crewing, budgets and oversight, so ownership stays trouble-free.</p>
-          <span class="resp-chip">A 24/7 flight department</span>
+          <span class="resp-kicker" data-i18n="resp1.k">Aircraft Management</span>
+          <h3 class="resp-word" data-i18n="show.c1">Manage</h3>
+          <p class="resp-desc" data-i18n="resp1.d">A customised flight department built around your aircraft — crewing, budgets and oversight, so ownership stays trouble-free.</p>
+          <span class="resp-chip" data-i18n="resp1.chip">A 24/7 flight department</span>
         </div>
       </article>
       <article class="resp" data-p="1">
         <span class="resp-n">02</span>
         <div class="resp-body">
-          <span class="resp-kicker">Flight Support</span>
-          <h3 class="resp-word">Operate</h3>
-          <p class="resp-desc">Permits, ground handling, slots and crew — every flight operated under our San Marino AOC, commercial or private.</p>
-          <span class="resp-chip">San Marino AOC</span>
+          <span class="resp-kicker" data-i18n="resp2.k">Flight Support</span>
+          <h3 class="resp-word" data-i18n="show.c2">Operate</h3>
+          <p class="resp-desc" data-i18n="resp2.d">Permits, ground handling, slots and crew — every flight operated under our San Marino AOC, commercial or private.</p>
+          <span class="resp-chip" data-i18n="resp2.chip">San Marino AOC</span>
         </div>
       </article>
       <article class="resp" data-p="2">
         <span class="resp-n">03</span>
         <div class="resp-body">
-          <span class="resp-kicker">Safety &amp; Oversight</span>
-          <h3 class="resp-word">Maintain</h3>
-          <p class="resp-desc">Your aircraft is operated to the IS-BAO safety standard by an AsBAA member — the highest level of safety, made routine.</p>
-          <span class="resp-chip">IS-BAO standard</span>
+          <span class="resp-kicker" data-i18n="resp3.k">Safety &amp; Oversight</span>
+          <h3 class="resp-word" data-i18n="show.c3">Maintain</h3>
+          <p class="resp-desc" data-i18n="resp3.d">Your aircraft is operated to the IS-BAO safety standard by an AsBAA member — the highest level of safety, made routine.</p>
+          <span class="resp-chip" data-i18n="resp3.chip">IS-BAO standard</span>
         </div>
       </article>
       <article class="resp" data-p="3">
         <span class="resp-n">04</span>
         <div class="resp-body">
-          <span class="resp-kicker">Private Charter</span>
-          <h3 class="resp-word">Charter</h3>
-          <p class="resp-desc">Our own Bombardier Global 5000, based in Hong Kong — available for private charter whenever the owner isn't flying.</p>
-          <span class="resp-chip">Global 5000 · Hong Kong</span>
+          <span class="resp-kicker" data-i18n="resp4.k">Private Charter</span>
+          <h3 class="resp-word" data-i18n="show.c4">Charter</h3>
+          <p class="resp-desc" data-i18n="resp4.d">Our own Bombardier Global 5000, based in Hong Kong — available for private charter whenever the owner isn't flying.</p>
+          <span class="resp-chip" data-i18n="resp4.chip">Global 5000 · Hong Kong</span>
         </div>
       </article>
     </div>
@@ -142,93 +147,93 @@
   <section class="services section" id="services" aria-labelledby="svc-h">
     <div class="container">
       <div class="head reveal">
-        <span class="eyebrow">What we do</span>
-        <h2 class="h2" id="svc-h">Management first — with one point of contact.</h2>
+        <span class="eyebrow" data-i18n="svc.eyebrow">What we do</span>
+        <h2 class="h2" id="svc-h" data-i18n="svc.h2">Management first — with one point of contact.</h2>
       </div>
-      <p class="services-cue">Tap or swipe a card for more <span aria-hidden="true">→</span></p>
+      <p class="services-cue" data-i18n="svc.cue" data-i18n-html>Tap or swipe a card for more <span aria-hidden="true">→</span></p>
       <div class="services-grid">
         <article class="svc lead-svc reveal" data-n="01">
-          <div class="svc-deck" tabindex="0" aria-label="Aircraft Management — swipe or use the dots for detail">
+          <div class="svc-deck" tabindex="0" data-i18n-aria="svc1.aria" aria-label="Aircraft Management — swipe or use the dots for detail">
             <div class="svc-slide svc-cover">
-              <img class="svc-img" src="img/svc-manage.jpg" alt="Managed private jet over the sea at dusk" decoding="async">
+              <img class="svc-img" src="img/svc-support.jpg" data-i18n-alt="svc2.alt" alt="Private jet on the tarmac at night, prepared for departure" decoding="async">
               <div class="svc-cover-txt">
                 <span class="svc-n">01</span>
-                <h3>Aircraft Management</h3>
-                <p class="svc-hook">A 24/7 flight department around your aircraft.</p>
+                <h3 data-i18n="svc1.h">Aircraft Management</h3>
+                <p class="svc-hook" data-i18n="svc1.hook">A 24/7 flight department around your aircraft.</p>
               </div>
-              <span class="svc-cue" aria-hidden="true">More&nbsp;<i>→</i></span>
+              <span class="svc-cue" aria-hidden="true" data-i18n="svc.more" data-i18n-html>More&nbsp;<i>→</i></span>
             </div>
             <div class="svc-slide svc-detail">
-              <span class="svc-k">Aircraft Management</span>
-              <p>Trouble-free, customised management under our San Marino AOC — commercial or private — or the Cayman Islands (CAACI) registry. Crewing, budgets and oversight, so ownership stays effortless.</p>
-              <a class="link-gold" href="#contact">Talk to us</a>
-              <button class="svc-back" type="button" aria-label="Back to summary">‹ Back</button>
+              <span class="svc-k" data-i18n="svc1.h">Aircraft Management</span>
+              <p data-i18n="svc1.d">Trouble-free, customised management under our San Marino AOC — commercial or private — or the Cayman Islands (CAACI) registry. Crewing, budgets and oversight, so ownership stays effortless.</p>
+              <a class="link-gold" href="#contact" data-i18n="nav.talk">Talk to us</a>
+              <button class="svc-back" type="button" data-i18n-aria="svc.backAria" aria-label="Back to summary" data-i18n="svc.back">‹ Back</button>
             </div>
           </div>
-          <div class="svc-dots"><button class="is-on" type="button" aria-label="Show summary"></button><button type="button" aria-label="Show detail"></button></div>
+          <div class="svc-dots"><button class="is-on" type="button" data-i18n-aria="svc.dot1" aria-label="Show summary"></button><button type="button" data-i18n-aria="svc.dot2" aria-label="Show detail"></button></div>
         </article>
 
         <article class="svc reveal" data-n="02">
-          <div class="svc-deck" tabindex="0" aria-label="Flight Support — swipe or use the dots for detail">
+          <div class="svc-deck" tabindex="0" data-i18n-aria="svc2.aria" aria-label="Flight Support — swipe or use the dots for detail">
             <div class="svc-slide svc-cover">
-              <img class="svc-img" src="img/svc-support.jpg" alt="Private jet in golden-hour flight" decoding="async">
+              <img class="svc-img" src="img/svc-manage.jpg" data-i18n-alt="svc1.alt" alt="Managed private jet over the sea at dusk" decoding="async">
               <div class="svc-cover-txt">
                 <span class="svc-n">02</span>
-                <h3>Flight Support</h3>
-                <p class="svc-hook">The groundwork behind every departure.</p>
+                <h3 data-i18n="svc2.h">Flight Support</h3>
+                <p class="svc-hook" data-i18n="svc2.hook">The groundwork behind every departure.</p>
               </div>
-              <span class="svc-cue" aria-hidden="true">More&nbsp;<i>→</i></span>
+              <span class="svc-cue" aria-hidden="true" data-i18n="svc.more" data-i18n-html>More&nbsp;<i>→</i></span>
             </div>
             <div class="svc-slide svc-detail">
-              <span class="svc-k">Flight Support</span>
-              <p>Permits, ground handling, slots and crewing — coordinated worldwide so every flight leaves on time, without friction.</p>
-              <a class="link-gold" href="#contact">Talk to us</a>
-              <button class="svc-back" type="button" aria-label="Back to summary">‹ Back</button>
+              <span class="svc-k" data-i18n="svc2.h">Flight Support</span>
+              <p data-i18n="svc2.d">Permits, ground handling, slots and crewing — coordinated worldwide so every flight leaves on time, without friction.</p>
+              <a class="link-gold" href="#contact" data-i18n="nav.talk">Talk to us</a>
+              <button class="svc-back" type="button" data-i18n-aria="svc.backAria" aria-label="Back to summary" data-i18n="svc.back">‹ Back</button>
             </div>
           </div>
-          <div class="svc-dots"><button class="is-on" type="button" aria-label="Show summary"></button><button type="button" aria-label="Show detail"></button></div>
+          <div class="svc-dots"><button class="is-on" type="button" data-i18n-aria="svc.dot1" aria-label="Show summary"></button><button type="button" data-i18n-aria="svc.dot2" aria-label="Show detail"></button></div>
         </article>
 
         <article class="svc reveal" data-d="1" data-n="03">
-          <div class="svc-deck" tabindex="0" aria-label="Aircraft Acquisition — swipe or use the dots for detail">
+          <div class="svc-deck" tabindex="0" data-i18n-aria="svc3.aria" aria-label="Aircraft Acquisition — swipe or use the dots for detail">
             <div class="svc-slide svc-cover">
-              <img class="svc-img" src="img/svc-acquire.jpg" alt="Private jet cabin interior" decoding="async">
+              <img class="svc-img" src="img/svc-acquire.jpg" data-i18n-alt="svc3.alt" alt="Private jet cabin interior" decoding="async">
               <div class="svc-cover-txt">
                 <span class="svc-n">03</span>
-                <h3>Aircraft Acquisition</h3>
-                <p class="svc-hook">Buying an aircraft? We sit on your side of the table.</p>
+                <h3 data-i18n="svc3.h">Aircraft Acquisition</h3>
+                <p class="svc-hook" data-i18n="svc3.hook">Buying an aircraft? We sit on your side of the table.</p>
               </div>
-              <span class="svc-cue" aria-hidden="true">More&nbsp;<i>→</i></span>
+              <span class="svc-cue" aria-hidden="true" data-i18n="svc.more" data-i18n-html>More&nbsp;<i>→</i></span>
             </div>
             <div class="svc-slide svc-detail">
-              <span class="svc-k">Aircraft Acquisition</span>
-              <p>Independent, owner-side advisory across the full purchase — aircraft selection, technical inspection and negotiation to close. Our only interest is yours.</p>
-              <a class="link-gold" href="#contact">Talk to us</a>
-              <button class="svc-back" type="button" aria-label="Back to summary">‹ Back</button>
+              <span class="svc-k" data-i18n="svc3.h">Aircraft Acquisition</span>
+              <p data-i18n="svc3.d">Independent, owner-side advisory across the full purchase — aircraft selection, technical inspection and negotiation to close. Our only interest is yours.</p>
+              <a class="link-gold" href="#contact" data-i18n="nav.talk">Talk to us</a>
+              <button class="svc-back" type="button" data-i18n-aria="svc.backAria" aria-label="Back to summary" data-i18n="svc.back">‹ Back</button>
             </div>
           </div>
-          <div class="svc-dots"><button class="is-on" type="button" aria-label="Show summary"></button><button type="button" aria-label="Show detail"></button></div>
+          <div class="svc-dots"><button class="is-on" type="button" data-i18n-aria="svc.dot1" aria-label="Show summary"></button><button type="button" data-i18n-aria="svc.dot2" aria-label="Show detail"></button></div>
         </article>
 
         <article class="svc reveal" data-n="04">
-          <div class="svc-deck" tabindex="0" aria-label="Private Charter — swipe or use the dots for detail">
+          <div class="svc-deck" tabindex="0" data-i18n-aria="svc4.aria" aria-label="Private Charter — swipe or use the dots for detail">
             <div class="svc-slide svc-cover">
-              <img class="svc-img" src="img/svc-charter.jpg" alt="Bombardier Global 5000 in flight" decoding="async">
+              <img class="svc-img" src="img/svc-charter.jpg" data-i18n-alt="svc4.alt" alt="Bombardier Global 5000 in flight" decoding="async">
               <div class="svc-cover-txt">
                 <span class="svc-n">04</span>
-                <h3>Private Charter</h3>
-                <p class="svc-hook">Fly private on our own Global 5000.</p>
+                <h3 data-i18n="svc4.h">Private Charter</h3>
+                <p class="svc-hook" data-i18n="svc4.hook">Fly private on our own Global 5000.</p>
               </div>
-              <span class="svc-cue" aria-hidden="true">More&nbsp;<i>→</i></span>
+              <span class="svc-cue" aria-hidden="true" data-i18n="svc.more" data-i18n-html>More&nbsp;<i>→</i></span>
             </div>
             <div class="svc-slide svc-detail">
-              <span class="svc-k">Private Charter</span>
-              <p>On-demand private flights on our own Bombardier Global 5000 — Hong Kong based, arranged seamlessly and flown to the IS-BAO safety standard.</p>
-              <a class="link-gold" href="#charter">Plan a flight</a>
-              <button class="svc-back" type="button" aria-label="Back to summary">‹ Back</button>
+              <span class="svc-k" data-i18n="svc4.h">Private Charter</span>
+              <p data-i18n="svc4.d">On-demand private flights on our own Bombardier Global 5000 — Hong Kong based, arranged seamlessly and flown to the IS-BAO safety standard.</p>
+              <a class="link-gold" href="#charter" data-i18n="svc.plan">Plan a flight</a>
+              <button class="svc-back" type="button" data-i18n-aria="svc.backAria" aria-label="Back to summary" data-i18n="svc.back">‹ Back</button>
             </div>
           </div>
-          <div class="svc-dots"><button class="is-on" type="button" aria-label="Show summary"></button><button type="button" aria-label="Show detail"></button></div>
+          <div class="svc-dots"><button class="is-on" type="button" data-i18n-aria="svc.dot1" aria-label="Show summary"></button><button type="button" data-i18n-aria="svc.dot2" aria-label="Show detail"></button></div>
         </article>
       </div>
     </div>
@@ -238,92 +243,77 @@
   <section class="charter section" id="charter" aria-labelledby="charter-h">
     <div class="container">
       <div class="head reveal">
-        <span class="eyebrow">One aircraft, based in Hong Kong</span>
-        <h2 class="h2" id="charter-h">Charter our Global 5000.</h2>
-        <p class="lead">We operate one aircraft for private charter — our own Bombardier Global 5000, based in Hong Kong. Tell us where you'd like to go, and an advisor will personally confirm every detail.</p>
+        <span class="eyebrow" data-i18n="ch.eyebrow">One aircraft, based in Hong Kong</span>
+        <h2 class="h2" id="charter-h" data-i18n="ch.h2">Charter our Global 5000.</h2>
+        <p class="lead" data-i18n="ch.lead">We operate one aircraft for private charter — our own Bombardier Global 5000, based in Hong Kong. Tell us where you'd like to go, and an advisor will personally confirm every detail.</p>
       </div>
 
       <div class="charter-grid">
         <aside class="jet-spec reveal">
-          <img src="img/cabin-s.jpg" alt="Bombardier Global 5000 cabin interior" width="480" height="300" loading="lazy" decoding="async">
+          <img src="img/cabin-s.jpg" data-i18n-alt="jet.alt" alt="Bombardier Global 5000 cabin interior" width="480" height="300" loading="lazy" decoding="async">
           <div class="spec-body">
             <h3>Bombardier Global 5000</h3>
-            <p class="spec-sub">Heavy jet · our own aircraft</p>
+            <p class="spec-sub" data-i18n="jet.sub">Heavy jet · our own aircraft</p>
             <dl>
-              <div><dt>Seats</dt><dd>Up to 13</dd></div>
-              <div><dt>Range</dt><dd>≈ 9,600 km</dd></div>
-              <div><dt>Home base</dt><dd>Hong Kong</dd></div>
-              <div><dt>Charters</dt><dd>To &amp; from HK</dd></div>
+              <div><dt data-i18n="jet.dt1">Seats</dt><dd data-i18n="jet.dd1">Up to 13</dd></div>
+              <div><dt data-i18n="jet.dt2">Range</dt><dd data-i18n="jet.dd2">≈ 9,600 km</dd></div>
+              <div><dt data-i18n="jet.dt3">Home base</dt><dd data-i18n="jet.dd3">Hong Kong</dd></div>
+              <div><dt data-i18n="jet.dt4">Charters</dt><dd data-i18n="jet.dd4">To &amp; from HK</dd></div>
             </dl>
-            <p class="base-note"><span aria-hidden="true">✦</span> <span><b>Why Hong Kong?</b> The aircraft lives in Hong Kong, so every charter begins or ends there. Your advisor will plan the routing around that.</span></p>
+            <p class="base-note"><span aria-hidden="true">✦</span> <span data-i18n="jet.note" data-i18n-html><b>Why Hong Kong?</b> The aircraft lives in Hong Kong, so every charter begins or ends there. Your advisor will plan the routing around that.</span></p>
           </div>
         </aside>
 
         <div class="organizer reveal" data-d="1" id="organizer">
           <div class="org-head">
-            <ol class="stepper" id="stepper">
-              <li data-ind="1" class="is-active"><span>1</span> Trip</li>
-              <li data-ind="2"><span>2</span> Contact</li>
-            </ol>
-            <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+            <h3 class="org-title" data-i18n="org.head">Plan your trip</h3>
+            <p class="org-sub" data-i18n="org.sub">No sign-up and no contact details — prepare your request here, then send it from your own email or simply call us.</p>
           </div>
 
-          <noscript><p class="noscript-note">The online planner needs JavaScript. To arrange a charter, call <a href="tel:+85221229018">+852 2122 9018</a> or email <a href="mailto:cs@everjet.net">cs@everjet.net</a> — an advisor will handle everything personally.</p></noscript>
+          <noscript><p class="noscript-note">The online planner needs JavaScript. To arrange a charter, call <a href="tel:+85221229018">+852 2122 9018</a> or email <a href="mailto:cs@everjet.net">cs@everjet.net</a> — an advisor will handle everything personally.<br><span lang="zh-Hant">網上規劃工具需要 JavaScript。如需安排包機，請致電 +852 2122 9018 或電郵 cs@everjet.net，顧問將親自為您辦理。</span><br><span lang="zh-Hans">在线规划工具需要 JavaScript。如需安排包机，请致电 +852 2122 9018 或发邮件至 cs@everjet.net，顾问将亲自为您办理。</span></p></noscript>
           <form id="charterForm" novalidate>
             <div class="hp" aria-hidden="true"><label>Company<input type="text" id="hp_company" name="company" tabindex="-1" autocomplete="off"></label></div>
 
             <!-- STEP 1 -->
             <fieldset class="step is-active" data-step="1">
               <div class="grid-2">
-                <div class="field"><label for="from">From</label><input id="from" list="airports" placeholder="Any city or airport" autocomplete="off"><p class="err" data-for="from"></p></div>
-                <div class="field"><label for="to">To</label><input id="to" list="airports" placeholder="Any city or airport" autocomplete="off"><p class="err" data-for="to"></p></div>
+                <div class="field"><label for="from" data-i18n="form.from">From</label><input id="from" list="airports" data-i18n-ph="form.ph" placeholder="Any city or airport" autocomplete="off"><p class="err" data-for="from"></p></div>
+                <div class="field"><label for="to" data-i18n="form.to">To</label><input id="to" list="airports" data-i18n-ph="form.ph" placeholder="Any city or airport" autocomplete="off"><p class="err" data-for="to"></p></div>
               </div>
-              <p class="route-note"><span class="route-pill">↩ Returns to Hong Kong</span> Fly between any two airports — the aircraft always returns to Hong Kong at the end of the trip. <button type="button" class="swap-btn" id="swapBtn" aria-label="Swap departure and destination">⇄ Swap</button></p>
+              <p class="route-note"><span class="route-pill" data-i18n="form.pill">↩ Returns to Hong Kong</span> <span data-i18n="form.routeNote">Fly between any two airports — the aircraft always returns to Hong Kong at the end of the trip.</span> <button type="button" class="swap-btn" id="swapBtn" data-i18n-aria="form.swapAria" aria-label="Swap departure and destination" data-i18n="form.swap">⇄ Swap</button></p>
               <div class="grid-3">
-                <div class="field"><label for="date">Departure</label><input id="date" type="date"><p class="err" data-for="date"></p></div>
-                <div class="field" id="returnField"><label for="returnDate">Return <span class="muted">(optional)</span></label><input id="returnDate" type="date"></div>
-                <div class="field"><label for="time">Time</label><input id="time" type="time" value="10:00"></div>
-                <div class="field"><label for="pax">Passengers</label><select id="pax" aria-label="Passengers"></select></div>
+                <div class="field"><label for="date" data-i18n="form.dep">Departure</label><input id="date" type="date"><p class="err" data-for="date"></p></div>
+                <div class="field" id="returnField"><label for="returnDate" data-i18n="form.ret" data-i18n-html>Return <span class="muted">(optional)</span></label><input id="returnDate" type="date"></div>
+                <div class="field"><label for="time" data-i18n="form.time">Time</label><input id="time" type="time" value="10:00"></div>
+                <div class="field"><label for="pax" data-i18n="form.pax">Passengers</label><select id="pax" data-i18n-aria="form.pax" aria-label="Passengers"></select></div>
               </div>
               <p class="avail" id="availNote" aria-live="polite"></p>
+              <div class="field" style="margin-top:1rem"><label for="notes" data-i18n="form.notes" data-i18n-html>Anything else? <span class="muted">(catering, pets, ground transfer, onward legs…)</span></label><textarea id="notes" rows="3"></textarea></div>
               <datalist id="airports"></datalist>
-            </fieldset>
-
-            <!-- STEP 2 -->
-            <fieldset class="step" data-step="2">
-              <p class="step-hint">Almost there — how should your advisor reach you?</p>
-              <div class="grid-2">
-                <div class="field"><label for="name">Full name</label><input id="name" autocomplete="name"><p class="err" data-for="name"></p></div>
-                <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email"><p class="err" data-for="email"></p></div>
-                <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" autocomplete="tel"><p class="err" data-for="phone"></p></div>
-                <div class="field"><label for="pref">Preferred contact</label><select id="pref"><option>Email</option><option>Phone call</option><option>WhatsApp</option></select></div>
-              </div>
-              <div class="field" style="margin-top:1rem"><label for="notes">Anything else? <span class="muted">(catering, pets, ground transfer, further legs…)</span></label><textarea id="notes" rows="3"></textarea></div>
-              <label class="consent"><input type="checkbox" id="consent"> I'd like an Ever Jet advisor to contact me about this request. <span class="err" data-for="consent"></span></label>
             </fieldset>
 
             <!-- SUMMARY -->
             <div class="summary" id="summaryPane" hidden>
-              <div class="summary-badge">Request prepared</div>
-              <h3 class="summary-ref">Reference <strong id="refNo"></strong></h3>
+              <div class="summary-badge" data-i18n="sum.badge">Request prepared</div>
+              <h3 class="summary-ref"><span data-i18n="sum.ref">Reference</span> <strong id="refNo"></strong></h3>
               <dl class="summary-grid" id="summaryGrid"></dl>
-              <p class="summary-note">A dedicated flight advisor will personally confirm availability and prepare a firm, all-in quote — typically within two hours. <strong>No payment is taken online, and nothing about your trip is stored or shared.</strong></p>
+              <p class="summary-note" data-i18n="sum.note" data-i18n-html>Send this to our charter desk from your own email, or simply call — a dedicated advisor will confirm availability and prepare a firm, all-in quote, typically within two hours. <strong>This website never collects your contact details, takes no payment online, and stores nothing about your trip.</strong></p>
               <div class="summary-actions">
-                <a class="btn btn-gold" id="mailBtn" href="#">Send to our charter desk</a>
-                <button type="button" class="btn btn-ghost" id="copyBtn">Copy request</button>
-                <button type="button" class="btn btn-ghost" id="newBtn">Start over</button>
+                <a class="btn btn-gold" id="mailBtn" href="#" data-i18n="sum.send">Open in your email app</a>
+                <a class="btn btn-ghost" id="callBtn" href="tel:+85221229018" data-i18n="sum.call">Call an advisor</a>
+                <button type="button" class="btn btn-ghost" id="copyBtn" data-i18n="sum.copy">Copy request</button>
+                <button type="button" class="btn btn-ghost" id="newBtn" data-i18n="sum.new">Start over</button>
               </div>
             </div>
 
             <!-- NAV -->
             <div class="org-nav" id="orgNav">
-              <button type="button" class="btn btn-ghost" id="backBtn" hidden>Back</button>
               <div class="est" id="estWrap" aria-live="polite" hidden>
-                <span class="est-label">Indicative estimate <select id="currency" class="cur-sel" aria-label="Quote currency"></select></span>
+                <span class="est-label"><span data-i18n="org.estLabel">Indicative estimate</span> <select id="currency" class="cur-sel" data-i18n-aria="org.cur" aria-label="Quote currency"></select></span>
                 <span class="est-val" id="estVal">—</span>
-                <span class="est-fine">Illustrative only · confirmed by your advisor</span>
+                <span class="est-fine" data-i18n="org.estFine">Illustrative only · confirmed by your advisor</span>
               </div>
-              <button type="button" class="btn btn-gold" id="nextBtn">Continue</button>
+              <button type="button" class="btn btn-gold" id="nextBtn" data-i18n="org.prepare">Prepare request</button>
             </div>
           </form>
         </div>
@@ -334,8 +324,8 @@
   <!-- DESTINATIONS RIBBON -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
-      <div class="mq-set"><span>Hong Kong</span><i>✦</i><span>Tokyo</span><i>✦</i><span>Osaka</span><i>✦</i><span>Seoul</span><i>✦</i><span>Jeju</span><i>✦</i><span>Taipei</span><i>✦</i><span>Shanghai</span><i>✦</i><span>Beijing</span><i>✦</i><span>Bangkok</span><i>✦</i><span>Singapore</span><i>✦</i><span>Manila</span><i>✦</i><span>Phuket</span><i>✦</i><span>Bali</span><i>✦</i><span>Maldives</span><i>✦</i><span>Dubai</span><i>✦</i><span>Sydney</span><i>✦</i><span>London</span><i>✦</i><span>Paris</span><i>✦</i><span>New York</span><i>✦</i></div>
-      <div class="mq-set"><span>Hong Kong</span><i>✦</i><span>Tokyo</span><i>✦</i><span>Osaka</span><i>✦</i><span>Seoul</span><i>✦</i><span>Jeju</span><i>✦</i><span>Taipei</span><i>✦</i><span>Shanghai</span><i>✦</i><span>Beijing</span><i>✦</i><span>Bangkok</span><i>✦</i><span>Singapore</span><i>✦</i><span>Manila</span><i>✦</i><span>Phuket</span><i>✦</i><span>Bali</span><i>✦</i><span>Maldives</span><i>✦</i><span>Dubai</span><i>✦</i><span>Sydney</span><i>✦</i><span>London</span><i>✦</i><span>Paris</span><i>✦</i><span>New York</span><i>✦</i></div>
+      <div class="mq-set"><span data-i18n="city.hk">Hong Kong</span><i>✦</i><span data-i18n="city.tokyo">Tokyo</span><i>✦</i><span data-i18n="city.osaka">Osaka</span><i>✦</i><span data-i18n="city.seoul">Seoul</span><i>✦</i><span data-i18n="city.jeju">Jeju</span><i>✦</i><span data-i18n="city.taipei">Taipei</span><i>✦</i><span data-i18n="city.shanghai">Shanghai</span><i>✦</i><span data-i18n="city.beijing">Beijing</span><i>✦</i><span data-i18n="city.bangkok">Bangkok</span><i>✦</i><span data-i18n="city.singapore">Singapore</span><i>✦</i><span data-i18n="city.manila">Manila</span><i>✦</i><span data-i18n="city.phuket">Phuket</span><i>✦</i><span data-i18n="city.bali">Bali</span><i>✦</i><span data-i18n="city.maldives">Maldives</span><i>✦</i><span data-i18n="city.dubai">Dubai</span><i>✦</i><span data-i18n="city.sydney">Sydney</span><i>✦</i><span data-i18n="city.london">London</span><i>✦</i><span data-i18n="city.paris">Paris</span><i>✦</i><span data-i18n="city.nyc">New York</span><i>✦</i></div>
+      <div class="mq-set"><span data-i18n="city.hk">Hong Kong</span><i>✦</i><span data-i18n="city.tokyo">Tokyo</span><i>✦</i><span data-i18n="city.osaka">Osaka</span><i>✦</i><span data-i18n="city.seoul">Seoul</span><i>✦</i><span data-i18n="city.jeju">Jeju</span><i>✦</i><span data-i18n="city.taipei">Taipei</span><i>✦</i><span data-i18n="city.shanghai">Shanghai</span><i>✦</i><span data-i18n="city.beijing">Beijing</span><i>✦</i><span data-i18n="city.bangkok">Bangkok</span><i>✦</i><span data-i18n="city.singapore">Singapore</span><i>✦</i><span data-i18n="city.manila">Manila</span><i>✦</i><span data-i18n="city.phuket">Phuket</span><i>✦</i><span data-i18n="city.bali">Bali</span><i>✦</i><span data-i18n="city.maldives">Maldives</span><i>✦</i><span data-i18n="city.dubai">Dubai</span><i>✦</i><span data-i18n="city.sydney">Sydney</span><i>✦</i><span data-i18n="city.london">London</span><i>✦</i><span data-i18n="city.paris">Paris</span><i>✦</i><span data-i18n="city.nyc">New York</span><i>✦</i></div>
     </div>
   </div>
 
@@ -343,18 +333,18 @@
   <section class="safety section" id="safety" aria-labelledby="safety-h">
     <div class="container safety-inner">
       <div class="reveal">
-        <span class="eyebrow">Safety, made visible</span>
-        <h2 class="h2" id="safety-h">Safety isn't a promise — it's a certification.</h2>
-        <p class="lead">Every Ever Jet flight operates under our Air Operator Certificate from the Republic of San Marino Civil Aviation Authority, to the globally recognised IS-BAO safety standard. Ever Jet is a proud member of the Asian Business Aviation Association.</p>
+        <span class="eyebrow" data-i18n="safety.eyebrow">Safety, made visible</span>
+        <h2 class="h2" id="safety-h" data-i18n="safety.h2">Safety isn't a promise — it's a certification.</h2>
+        <p class="lead" data-i18n="safety.lead">Every Ever Jet flight operates under our Air Operator Certificate from the Republic of San Marino Civil Aviation Authority, to the globally recognised IS-BAO safety standard. Ever Jet is a proud member of the Asian Business Aviation Association.</p>
         <div class="safety-badges">
-          <img src="img/isbao-s.jpg" alt="IS-BAO registered" loading="lazy" decoding="async">
-          <img src="img/asbaa-s.jpg" alt="AsBAA member" loading="lazy" decoding="async">
+          <img src="img/isbao-s.jpg" data-i18n-alt="safety.alt1" alt="IS-BAO registered" loading="lazy" decoding="async">
+          <img src="img/asbaa-s.jpg" data-i18n-alt="safety.alt2" alt="AsBAA member" loading="lazy" decoding="async">
         </div>
       </div>
       <div class="safety-points reveal" data-d="1">
-        <div class="safety-point"><h4>Certified operations</h4><p>San Marino AOC for commercial and private air operations — audited, accountable, current.</p></div>
-        <div class="safety-point"><h4>Discreet by default</h4><p>Your itinerary, manifest and details are handled privately and never sold, listed or shared with third parties.</p></div>
-        <div class="safety-point"><h4>No online payment risk</h4><p>We never ask for card details online. A named advisor confirms your trip and invoices you directly, on your terms.</p></div>
+        <div class="safety-point"><h4 data-i18n="sp1.h">Certified operations</h4><p data-i18n="sp1.p">San Marino AOC for commercial and private air operations — audited, accountable, current.</p></div>
+        <div class="safety-point"><h4 data-i18n="sp2.h">Discreet by default</h4><p data-i18n="sp2.p">Your itinerary, manifest and details are handled privately and never sold, listed or shared with third parties.</p></div>
+        <div class="safety-point"><h4 data-i18n="sp3.h">No online payment risk</h4><p data-i18n="sp3.p">We never ask for card details online. A named advisor confirms your trip and invoices you directly, on your terms.</p></div>
       </div>
     </div>
   </section>
@@ -363,20 +353,20 @@
   <section class="section" id="about" aria-labelledby="about-h">
     <div class="container about-inner">
       <div class="about-copy reveal">
-        <span class="eyebrow">About Ever Jet</span>
-        <h2 class="h2" id="about-h" style="margin-bottom:1.4rem">Built around the aircraft owner.</h2>
-        <p>Ever Jet Aviation is a Hong Kong–based aviation service company, with supporting operations in the Republic of San Marino, Singapore and Malaysia.</p>
-        <p>We commenced commercial air-transport and on-demand charter operations in July 2023. Our team pairs localised expertise with international exposure, determined to close the service gap in aviation across Greater China and Southeast Asia.</p>
-        <p>Our focus on the management of your valuable asset lets you simply enjoy the benefits of a 24/7 flight department at your fingertips — built on meaningful relationships, with your best interests always first.</p>
+        <span class="eyebrow" data-i18n="about.eyebrow">About Ever Jet</span>
+        <h2 class="h2" id="about-h" style="margin-bottom:1.4rem" data-i18n="about.h2">Built around the aircraft owner.</h2>
+        <p data-i18n="about.p1">Ever Jet Aviation is a Hong Kong–based aviation service company, with supporting operations in the Republic of San Marino, Singapore and Malaysia.</p>
+        <p data-i18n="about.p2">We commenced commercial air-transport and on-demand charter operations in July 2023. Our team pairs localised expertise with international exposure, determined to close the service gap in aviation across Greater China and Southeast Asia.</p>
+        <p data-i18n="about.p3">We focus on managing your valuable asset so you can simply enjoy a 24/7 flight department at your fingertips — built on meaningful relationships, with your best interests always first.</p>
         <div class="stats">
-          <div class="stat"><b>4</b><span>Locations worldwide</span></div>
-          <div class="stat"><b>24/7</b><span>Flight department</span></div>
-          <div class="stat"><b>1:1</b><span>Named point of contact</span></div>
+          <div class="stat"><b>4</b><span data-i18n="stat1.s">Locations worldwide</span></div>
+          <div class="stat"><b>24/7</b><span data-i18n="stat2.s">Flight department</span></div>
+          <div class="stat"><b>1:1</b><span data-i18n="stat3.s">Named point of contact</span></div>
         </div>
       </div>
       <div class="about-visual reveal" data-d="1">
-        <img src="img/hero-jet.jpg" alt="Ever Jet aircraft in flight at golden hour" loading="lazy" decoding="async">
-        <div class="plate"><b>Delivering exceptional service.</b><br><span>Cultivating meaningful client connection.</span></div>
+        <img src="img/jet-asia.jpg" data-i18n-alt="about.alt" alt="Business jet on the tarmac at an Asian airport" width="1400" height="933" loading="lazy" decoding="async">
+        <div class="plate" data-i18n="about.plate" data-i18n-html><b>Delivering exceptional service.</b><br><span>Cultivating meaningful client connection.</span></div>
       </div>
     </div>
   </section>
@@ -385,12 +375,12 @@
   <section class="cta section" id="contact">
     <div class="container">
       <div class="head center reveal">
-        <span class="eyebrow eyebrow-light">Ready when you are</span>
-        <h2 class="h2">Let's look after your aircraft.</h2>
-        <p class="lead">Talk to us about managing your aircraft, or arrange a charter on our Global 5000. Either way, a real person sees it through.</p>
+        <span class="eyebrow eyebrow-light" data-i18n="cta.eyebrow">Ready when you are</span>
+        <h2 class="h2" data-i18n="cta.h2">Let's look after your aircraft.</h2>
+        <p class="lead" data-i18n="cta.lead">Talk to us about managing your aircraft, or arrange a charter on our Global 5000. Either way, a real person sees it through.</p>
         <div class="cta-actions">
-          <a class="btn btn-gold btn-lg" href="tel:+85221229018">Speak to an advisor</a>
-          <a class="btn btn-ghost on-navy btn-lg" href="mailto:cs@everjet.net">Email cs@everjet.net</a>
+          <a class="btn btn-gold btn-lg" href="tel:+85221229018" data-i18n="cta.call">Speak to an advisor</a>
+          <a class="btn btn-ghost on-navy btn-lg" href="mailto:cs@everjet.net" data-i18n="cta.mail">Email cs@everjet.net</a>
         </div>
       </div>
     </div>
@@ -403,33 +393,34 @@
     <div class="footer-top">
       <div class="footer-brand">
         <img src="img/logo.png" alt="Ever Jet Aviation">
-        <p>A Hong Kong aviation company — aircraft management, flight support, acquisition and private charter on our own Global 5000, serving Greater China and Southeast Asia.</p>
+        <p data-i18n="ft.brand">A Hong Kong aviation company — aircraft management, flight support, acquisition and private charter on our own Global 5000, serving Greater China and Southeast Asia.</p>
       </div>
       <div class="footer-col">
-        <h5>Contact</h5>
+        <h5 data-i18n="ft.contact">Contact</h5>
         <a href="tel:+85221229018">+852 2122 9018</a>
         <a href="mailto:cs@everjet.net">cs@everjet.net</a>
-        <p>Unit 1502, 15/F, Grand Millennium Plaza,<br>181 Queen's Road Central, Sheung Wan, Hong Kong</p>
+        <p data-i18n="ft.addr" data-i18n-html>Unit 1502, 15/F, Grand Millennium Plaza,<br>181 Queen's Road Central, Sheung Wan, Hong Kong</p>
       </div>
       <div class="footer-col">
-        <h5>Explore</h5>
-        <a href="#services">Aircraft management</a>
-        <a href="#charter">Charter the Global 5000</a>
-        <a href="#safety">Safety &amp; certification</a>
-        <a href="#about">About Ever Jet</a>
-        <h5 style="margin-top:1.6rem">Offices</h5>
-        <div class="footer-offices"><span>Hong Kong</span><span>·</span><span>San Marino</span><span>·</span><span>Singapore</span><span>·</span><span>Malaysia</span></div>
+        <h5 data-i18n="ft.explore">Explore</h5>
+        <a href="#services" data-i18n="ft.l1">Aircraft management</a>
+        <a href="#charter" data-i18n="ft.l2">Charter the Global 5000</a>
+        <a href="#safety" data-i18n="ft.l3">Safety &amp; certification</a>
+        <a href="#about" data-i18n="ft.l4">About Ever Jet</a>
+        <h5 style="margin-top:1.6rem" data-i18n="ft.offices">Offices</h5>
+        <div class="footer-offices"><span data-i18n="city.hk">Hong Kong</span><span>·</span><span data-i18n="ft.sm">San Marino</span><span>·</span><span data-i18n="city.singapore">Singapore</span><span>·</span><span data-i18n="ft.my">Malaysia</span></div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© Ever Jet Aviation Limited. Operated under a Republic of San Marino AOC.</span>
-      <span>Concept redesign · indicative figures illustrative only</span>
+      <span data-i18n="ft.copy">© Ever Jet Aviation Limited. Operated under a Republic of San Marino AOC.</span>
+      <span data-i18n="ft.concept">Concept redesign · all figures indicative</span>
     </div>
   </div>
 </footer>
 
-<a class="advisor-fab" href="tel:+85221229018"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.7 3.9 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg> Call an advisor</a>
+<a class="advisor-fab" href="tel:+85221229018"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.7 3.9 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg> <span data-i18n="fab">Call an advisor</span></a>
 
+<script src="i18n.js" defer></script>
 <script src="app.js" defer></script>
 </body>
 </html>
